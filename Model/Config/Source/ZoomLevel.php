@@ -23,7 +23,10 @@ class ZoomLevel implements OptionSourceInterface
             ['value' => '2', 'label' => __('2x')],
             ['value' => '3', 'label' => __('3x')],
             ['value' => '4', 'label' => __('4x')],
-            ['value' => '5', 'label' => __('5x')]
+            ['value' => '5', 'label' => __('5x')],
+            ['value' => '6', 'label' => __('6x')],
+            ['value' => '8', 'label' => __('8x')],
+            ['value' => '10', 'label' => __('10x')]
         ];
     }
 }
