@@ -3,7 +3,7 @@
     "description": "Modern vertical editorial-style product gallery for Magento 2 with hover zoom, lightbox, sticky panel, and mobile carousel",
     "type": "magento2-module",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [
         "magento2",
         "magento",
@@ -23,10 +23,10 @@
             "homepage": "https://rollpix.com"
         }
     ],
-    "homepage": "https://github.com/rollpix/magento2-product-gallery",
+    "homepage": "https://github.com/ROLLPIX/M2-ProductGalleryStyle",
     "support": {
-        "issues": "https://github.com/rollpix/magento2-product-gallery/issues",
-        "source": "https://github.com/rollpix/magento2-product-gallery"
+        "issues": "https://github.com/ROLLPIX/M2-ProductGalleryStyle/issues",
+        "source": "https://github.com/ROLLPIX/M2-ProductGalleryStyle"
     },
     "require": {
         "php": "~8.1.0||~8.2.0||~8.3.0",
