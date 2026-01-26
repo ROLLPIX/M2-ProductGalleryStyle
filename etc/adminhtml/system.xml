@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Rollpix ProductGallery Admin System Configuration
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="rollpix" translate="label" sortOrder="400">
+            <label>Rollpix</label>
+        </tab>
+
+        <section id="rollpix_gallery"
+                 translate="label"
+                 type="text"
+                 sortOrder="10"
+                 showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
+            <label>Product Gallery</label>
+            <tab>rollpix</tab>
+            <resource>Rollpix_ProductGallery::config</resource>
+
+            <!-- Zoom Group -->
+            <group id="zoom"
+                   translate="label"
+                   type="text"
+                   sortOrder="10"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Zoom Settings</label>
+
+                <field id="type"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Zoom Type</label>
+                    <comment>Select the zoom behavior when interacting with images</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ZoomType</source_model>
+                </field>
+
+                <field id="level"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Zoom Level</label>
+                    <comment>Magnification level for hover zoom</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ZoomLevel</source_model>
+                    <depends>
+                        <field id="type">hover</field>
+                    </depends>
+                </field>
+
+                <field id="position"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Zoom Window Position</label>
+                    <comment>Position of the magnified view (only for hover zoom)</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ZoomPosition</source_model>
+                    <depends>
+                        <field id="type">hover</field>
+                    </depends>
+                </field>
+            </group>
+
+            <!-- Layout Group -->
+            <group id="layout"
+                   translate="label"
+                   type="text"
+                   sortOrder="20"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Layout Settings</label>
+
+                <field id="gallery_position"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Gallery Position</label>
+                    <comment>Position of the image gallery relative to product info</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\GalleryPosition</source_model>
+                </field>
+
+                <field id="column_ratio"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Column Ratio</label>
+                    <comment>Width ratio between gallery and product info columns</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ColumnRatio</source_model>
+                </field>
+
+                <field id="image_gap"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Gap Between Images</label>
+                    <comment>Space between images in the gallery (in pixels)</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ImageGap</source_model>
+                </field>
+            </group>
+
+            <!-- Mobile Group -->
+            <group id="mobile"
+                   translate="label"
+                   type="text"
+                   sortOrder="30"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Mobile Settings</label>
+
+                <field id="behavior"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Mobile Behavior</label>
+                    <comment>How images are displayed on mobile devices</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\MobileBehavior</source_model>
+                </field>
+            </group>
+
+            <!-- Sticky Group -->
+            <group id="sticky"
+                   translate="label"
+                   type="text"
+                   sortOrder="40"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Sticky Panel Settings</label>
+
+                <field id="enabled"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Sticky</label>
+                    <comment>Keep product info panel fixed while scrolling through images</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="offset"
+                       translate="label comment"
+                       type="text"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Top Offset (px)</label>
+                    <comment>Distance from top of viewport when sticky (useful for fixed headers)</comment>
+                    <validate>validate-digits</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

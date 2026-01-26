@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Rollpix ProductGallery Dependency Injection Configuration
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Rollpix\ProductGallery\Block\Product\View\Gallery">
+        <arguments>
+            <argument name="galleryConfig" xsi:type="object">Rollpix\ProductGallery\Model\Config</argument>
+        </arguments>
+    </type>
+
+</config>

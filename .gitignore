@@ -1,0 +1,21 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Composer
+/vendor/
+
+# Testing
+/phpunit.xml
+/coverage/
+
+# Temporary files
+*.log
+*.tmp

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Rollpix ProductGallery Default Configuration
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <rollpix_gallery>
+            <!-- Zoom Settings -->
+            <zoom>
+                <type>hover</type>
+                <level>3</level>
+                <position>right</position>
+            </zoom>
+            <!-- Layout Settings -->
+            <layout>
+                <gallery_position>left</gallery_position>
+                <column_ratio>50_50</column_ratio>
+                <image_gap>20</image_gap>
+            </layout>
+            <!-- Mobile Settings -->
+            <mobile>
+                <behavior>carousel</behavior>
+            </mobile>
+            <!-- Sticky Settings -->
+            <sticky>
+                <enabled>1</enabled>
+                <offset>20</offset>
+            </sticky>
+        </rollpix_gallery>
+    </default>
+</config>

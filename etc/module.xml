@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Rollpix ProductGallery Module Declaration
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Rollpix_ProductGallery">
+        <sequence>
+            <module name="Magento_Catalog"/>
+        </sequence>
+    </module>
+</config>

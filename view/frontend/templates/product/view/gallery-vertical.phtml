@@ -1,0 +1,101 @@
+<?php
+/**
+ * Rollpix ProductGallery - Vertical Gallery Template
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ * @var \Magento\Catalog\Block\Product\View\Gallery $block
+ * @var \Rollpix\ProductGallery\ViewModel\GalleryConfig $galleryConfig
+ */
+
+declare(strict_types=1);
+
+/** @var \Magento\Catalog\Model\Product $product */
+$product = $block->getProduct();
+
+if (!$product) {
+    return;
+}
+
+$productName = $block->escapeHtml($product->getName());
+
+/** @var \Magento\Framework\Data\Collection $images */
+$images = $product->getMediaGalleryImages();
+
+// Don't render if no images
+if (!$images || $images->getSize() === 0) {
+    return;
+}
+
+// Get ViewModel
+/** @var \Rollpix\ProductGallery\ViewModel\GalleryConfig $galleryConfig */
+$galleryConfig = $block->getData('gallery_config');
+
+// Get configuration from ViewModel
+$zoomType = $galleryConfig->getZoomType();
+$zoomLevel = $galleryConfig->getZoomLevel();
+$zoomPosition = $galleryConfig->getZoomPosition();
+$galleryPosition = $galleryConfig->getGalleryPosition();
+$columnRatio = $galleryConfig->getColumnRatio();
+$imageGap = $galleryConfig->getImageGap();
+$mobileBehavior = $galleryConfig->getMobileBehavior();
+$stickyEnabled = $galleryConfig->isStickyEnabled();
+$stickyOffset = $galleryConfig->getStickyOffset();
+
+// Build CSS classes
+$wrapperClasses = [
+    'rp-product-gallery',
+    'rp-gallery-position-' . $galleryPosition,
+    'rp-mobile-' . $mobileBehavior,
+    'rp-zoom-' . $zoomType
+];
+
+// Get JS config
+$jsConfig = $galleryConfig->getJsConfigJson();
+
+// Get column CSS values
+$columnCss = $galleryConfig->getColumnCss();
+?>
+
+<style>
+    .rp-product-wrapper {
+        --rp-col-1: <?= $block->escapeHtmlAttr($columnCss['col1']) ?>;
+        --rp-col-2: <?= $block->escapeHtmlAttr($columnCss['col2']) ?>;
+        --rp-gallery-order: <?= (int)$columnCss['galleryOrder'] ?>;
+        --rp-info-order: <?= (int)$columnCss['infoOrder'] ?>;
+        --rp-sticky-offset: <?= (int)$stickyOffset ?>px;
+        --rp-image-gap: <?= (int)$imageGap ?>px;
+    }
+    <?php if (!$stickyEnabled): ?>
+    .rp-product-wrapper .product-info-main {
+        position: static !important;
+    }
+    <?php endif; ?>
+</style>
+
+<div class="<?= $block->escapeHtmlAttr(implode(' ', $wrapperClasses)) ?>"
+     data-role="rp-gallery"
+     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>}'>
+
+    <div class="rp-gallery-images">
+        <?php foreach ($images as $image): ?>
+            <?php
+            $largeImageUrl = $image->getData('large_image_url') ?: $image->getData('url');
+            $mediumImageUrl = $image->getData('medium_image_url') ?: $image->getData('url');
+            $imageLabel = $image->getData('label') ?: $productName;
+            ?>
+            <a href="<?= $block->escapeUrl($largeImageUrl) ?>"
+               class="rp-gallery-item <?= $zoomType === 'lightbox' ? 'glightbox' : '' ?>"
+               data-gallery="product-gallery"
+               <?php if ($zoomType === 'lightbox'): ?>
+               data-glightbox="title: <?= $block->escapeHtmlAttr($imageLabel) ?>"
+               <?php endif; ?>>
+                <img src="<?= $block->escapeUrl($mediumImageUrl) ?>"
+                     alt="<?= $block->escapeHtmlAttr($imageLabel) ?>"
+                     loading="lazy"
+                     width="600"
+                     height="600"/>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>

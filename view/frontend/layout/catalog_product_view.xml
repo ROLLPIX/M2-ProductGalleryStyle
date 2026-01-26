@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Rollpix ProductGallery Layout
+ *
+ * Replaces standard Fotorama gallery with vertical editorial layout
+ *
+ * @category  Rollpix
+ * @package   Rollpix_ProductGallery
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <head>
+        <css src="Rollpix_ProductGallery::css/gallery-vertical.css"/>
+    </head>
+
+    <body>
+        <!-- Remove original Fotorama gallery -->
+        <referenceBlock name="product.info.media.image" remove="true"/>
+        <referenceContainer name="product.media" remove="true"/>
+
+        <!-- Create wrapper container for gallery + product info -->
+        <referenceContainer name="content">
+            <container name="rp.product.wrapper"
+                       htmlTag="div"
+                       htmlClass="rp-product-wrapper"
+                       before="product.info.details"/>
+        </referenceContainer>
+
+        <!-- Add vertical gallery block with ViewModel -->
+        <referenceContainer name="rp.product.wrapper">
+            <block class="Magento\Catalog\Block\Product\View\Gallery"
+                   name="rollpix.product.gallery.vertical"
+                   template="Rollpix_ProductGallery::product/view/gallery-vertical.phtml">
+                <arguments>
+                    <argument name="gallery_config" xsi:type="object">Rollpix\ProductGallery\ViewModel\GalleryConfig</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <!-- Move product.info.main into the wrapper -->
+        <move element="product.info.main"
+              destination="rp.product.wrapper"
+              after="rollpix.product.gallery.vertical"/>
+
+        <!-- Add CSS class to body for targeting -->
+        <attribute name="class" value="rp-vertical-gallery-page"/>
+    </body>
+</page>
