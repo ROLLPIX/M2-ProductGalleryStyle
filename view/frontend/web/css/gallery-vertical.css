@@ -75,6 +75,16 @@
     align-self: start;
     max-height: calc(100vh - var(--rp-sticky-offset) - 20px);
     overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Reset Luma's default width restrictions */
+.catalog-product-view.page-layout-1column .rp-product-wrapper .product-info-main,
+.catalog-product-view .rp-product-wrapper .product-info-main {
+    width: 100%;
+    float: none;
+    padding-left: 0;
 }
 
 /* Hide original Fotorama gallery elements */
