@@ -1,5 +1,7 @@
 /**
- * Rollpix ProductGallery - Hover Zoom Component
+ * Rollpix ProductGallery - Zoom Component
+ *
+ * Supports: hover (magnifier), lightbox (GLightbox), click (in-place), disabled
  *
  * @category  Rollpix
  * @package   Rollpix_ProductGallery
@@ -16,10 +18,7 @@ define([
         var zoomLevel = config.zoom ? config.zoom.level : 3;
         var zoomPosition = config.zoom ? config.zoom.position : 'right';
 
-        console.log('Rollpix Gallery Zoom initialized', {type: zoomType, level: zoomLevel, position: zoomPosition});
-
         if (zoomType === 'disabled') {
-            console.log('Zoom is disabled');
             return;
         }
 
@@ -28,41 +27,39 @@ define([
             return;
         }
 
-        // Hover zoom
+        if (zoomType === 'click') {
+            initClickZoom();
+            return;
+        }
+
+        // Default: hover zoom
         initHoverZoom();
 
-        /**
-         * Initialize hover zoom functionality
-         */
+        /* ===========================================================
+           HOVER ZOOM - Magnifier lens + result panel on the right
+           =========================================================== */
         function initHoverZoom() {
             var $items = $gallery.find('.rp-gallery-item');
-            console.log('Found gallery items:', $items.length);
 
-            $items.each(function (index) {
+            $items.each(function () {
                 var $item = $(this);
                 var $img = $item.find('img');
                 var largeImageUrl = $item.attr('href');
 
-                console.log('Processing item', index, largeImageUrl);
-
-                // Prevent default link behavior
                 $item.on('click', function (e) {
                     e.preventDefault();
                 });
 
-                // Create wrapper for zoom positioning
+                // Wrapper for positioning
                 var $zoomWrapper = $('<div class="rp-zoom-wrapper"></div>');
                 $item.wrap($zoomWrapper);
                 $zoomWrapper = $item.parent();
 
-                // Create zoom elements
                 var $zoomLens = $('<div class="rp-zoom-lens"></div>');
                 var $zoomResult = $('<div class="rp-zoom-result"></div>');
 
-                // Add lens inside the item
                 $item.append($zoomLens);
 
-                // Add result based on position
                 if (zoomPosition === 'right') {
                     $zoomWrapper.append($zoomResult);
                     $zoomResult.addClass('rp-zoom-result-right');
@@ -71,28 +68,15 @@ define([
                     $zoomResult.addClass('rp-zoom-result-inside');
                 }
 
-                // Preload large image
                 var largeImage = new Image();
 
                 largeImage.onload = function () {
-                    console.log('Large image loaded', largeImage.width, 'x', largeImage.height);
-
                     $zoomResult.css('background-image', 'url("' + largeImageUrl + '")');
 
-                    // Store data for later use
-                    $item.data('rp-zoom', {
-                        largeImage: largeImage,
-                        $lens: $zoomLens,
-                        $result: $zoomResult,
-                        zoomLevel: zoomLevel
-                    });
-
-                    // Mouse events
                     $item.on('mouseenter.rpzoom', function () {
                         var imgWidth = $img.width();
                         var imgHeight = $img.height();
 
-                        // Calculate lens size
                         var lensWidth = imgWidth / zoomLevel;
                         var lensHeight = imgHeight / zoomLevel;
 
@@ -101,11 +85,14 @@ define([
                             height: lensHeight + 'px'
                         });
 
-                        // Set result size
                         if (zoomPosition === 'right') {
+                            // Compact result: 60% of image size
+                            var resultW = Math.round(imgWidth * 0.6);
+                            var resultH = Math.round(imgHeight * 0.6);
+
                             $zoomResult.css({
-                                width: imgWidth + 'px',
-                                height: imgHeight + 'px',
+                                width: resultW + 'px',
+                                height: resultH + 'px',
                                 backgroundSize: largeImage.width + 'px ' + largeImage.height + 'px'
                             });
                         } else {
@@ -132,78 +119,163 @@ define([
                         var lensWidth = $zoomLens.outerWidth();
                         var lensHeight = $zoomLens.outerHeight();
 
-                        // Calculate cursor position relative to image
                         var x = e.pageX - offset.left;
                         var y = e.pageY - offset.top;
 
-                        // Calculate lens position (centered on cursor)
-                        var lensX = x - (lensWidth / 2);
-                        var lensY = y - (lensHeight / 2);
+                        var lensX = Math.max(0, Math.min(x - lensWidth / 2, imgWidth - lensWidth));
+                        var lensY = Math.max(0, Math.min(y - lensHeight / 2, imgHeight - lensHeight));
 
-                        // Constrain lens to image boundaries
-                        lensX = Math.max(0, Math.min(lensX, imgWidth - lensWidth));
-                        lensY = Math.max(0, Math.min(lensY, imgHeight - lensHeight));
+                        $zoomLens.css({ left: lensX + 'px', top: lensY + 'px' });
 
-                        // Position lens
-                        $zoomLens.css({
-                            left: lensX + 'px',
-                            top: lensY + 'px'
-                        });
-
-                        // Calculate background position for zoom result
                         var ratioX = largeImage.width / imgWidth;
                         var ratioY = largeImage.height / imgHeight;
 
-                        var bgX = -(lensX * ratioX);
-                        var bgY = -(lensY * ratioY);
-
-                        $zoomResult.css('background-position', bgX + 'px ' + bgY + 'px');
+                        $zoomResult.css('background-position',
+                            -(lensX * ratioX) + 'px ' + -(lensY * ratioY) + 'px'
+                        );
                     });
-                };
-
-                largeImage.onerror = function() {
-                    console.error('Failed to load large image:', largeImageUrl);
                 };
 
                 largeImage.src = largeImageUrl;
             });
         }
 
-        /**
-         * Initialize lightbox functionality
-         */
+        /* ===========================================================
+           CLICK ZOOM - Click to toggle zoom inside the image
+           =========================================================== */
+        function initClickZoom() {
+            var $items = $gallery.find('.rp-gallery-item');
+
+            $items.each(function () {
+                var $item = $(this);
+                var $img = $item.find('img');
+                var largeImageUrl = $item.attr('href');
+                var isZoomed = false;
+
+                // Create overlay for zoomed view
+                var $zoomOverlay = $('<div class="rp-click-zoom-overlay"></div>');
+                $item.append($zoomOverlay);
+                $item.addClass('rp-click-zoom-item');
+
+                var largeImage = new Image();
+
+                largeImage.onload = function () {
+                    $zoomOverlay.css('background-image', 'url("' + largeImageUrl + '")');
+
+                    // Click to toggle zoom
+                    $item.on('click.rpzoom', function (e) {
+                        e.preventDefault();
+
+                        if (!isZoomed) {
+                            // Activate zoom
+                            isZoomed = true;
+                            $item.addClass('rp-click-zoomed');
+
+                            var imgWidth = $img.width();
+                            var imgHeight = $img.height();
+
+                            $zoomOverlay.css({
+                                backgroundSize: (imgWidth * zoomLevel) + 'px ' + (imgHeight * zoomLevel) + 'px'
+                            });
+
+                            // Position zoom at click point
+                            positionZoom(e);
+                            $zoomOverlay.addClass('active');
+                        } else {
+                            // Deactivate zoom
+                            isZoomed = false;
+                            $item.removeClass('rp-click-zoomed');
+                            $zoomOverlay.removeClass('active');
+                        }
+                    });
+
+                    // Move zoom while active
+                    $item.on('mousemove.rpzoom', function (e) {
+                        if (!isZoomed) return;
+                        positionZoom(e);
+                    });
+
+                    // Exit zoom when leaving the image
+                    $item.on('mouseleave.rpzoom', function () {
+                        if (isZoomed) {
+                            isZoomed = false;
+                            $item.removeClass('rp-click-zoomed');
+                            $zoomOverlay.removeClass('active');
+                        }
+                    });
+
+                    function positionZoom(e) {
+                        var offset = $img.offset();
+                        var imgWidth = $img.width();
+                        var imgHeight = $img.height();
+
+                        // Mouse position as percentage
+                        var pctX = (e.pageX - offset.left) / imgWidth;
+                        var pctY = (e.pageY - offset.top) / imgHeight;
+
+                        // Clamp to 0-1
+                        pctX = Math.max(0, Math.min(1, pctX));
+                        pctY = Math.max(0, Math.min(1, pctY));
+
+                        // Background position
+                        var bgWidth = imgWidth * zoomLevel;
+                        var bgHeight = imgHeight * zoomLevel;
+
+                        var bgX = -(pctX * (bgWidth - imgWidth));
+                        var bgY = -(pctY * (bgHeight - imgHeight));
+
+                        $zoomOverlay.css('background-position', bgX + 'px ' + bgY + 'px');
+                    }
+                };
+
+                largeImage.src = largeImageUrl;
+            });
+        }
+
+        /* ===========================================================
+           LIGHTBOX - Full-screen gallery with close / navigation
+           =========================================================== */
         function initLightbox() {
             // Load GLightbox CSS
             if (!$('link[href*="glightbox"]').length) {
                 $('head').append(
-                    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">'
+                    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">'
                 );
             }
 
-            // Load GLightbox JS and initialize
+            // Load GLightbox JS
             if (typeof GLightbox === 'undefined') {
-                $.getScript('https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js', function () {
-                    createLightbox();
-                });
+                $.getScript(
+                    'https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js',
+                    function () { createLightbox(); }
+                );
             } else {
                 createLightbox();
             }
         }
 
-        /**
-         * Create GLightbox instance
-         */
         function createLightbox() {
-            if (typeof GLightbox !== 'undefined') {
-                GLightbox({
-                    selector: '.rp-gallery-item.glightbox',
-                    touchNavigation: true,
-                    loop: true,
-                    closeButton: true,
-                    zoomable: true,
-                    draggable: true
-                });
-            }
+            if (typeof GLightbox === 'undefined') return;
+
+            var lightbox = GLightbox({
+                selector: '.rp-gallery-item.glightbox',
+                touchNavigation: true,
+                loop: true,
+                closeButton: true,
+                closeOnOutsideClick: true,
+                zoomable: true,
+                draggable: true,
+                openEffect: 'fade',
+                closeEffect: 'fade',
+                cssEf498: 'fade'
+            });
+
+            // Extra close-on-Escape safety
+            $(document).on('keydown.rplightbox', function (e) {
+                if (e.key === 'Escape' && lightbox) {
+                    lightbox.close();
+                }
+            });
         }
     };
 });

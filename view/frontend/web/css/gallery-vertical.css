@@ -146,11 +146,14 @@
     visibility: visible;
 }
 
-/* Zoom result - right side position */
+/* Zoom result - right side (compact) */
 .rp-zoom-result-right {
     position: absolute;
-    left: calc(100% + 20px);
+    left: calc(100% + 15px);
     top: 0;
+    border-radius: 6px;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 /* Zoom result - inside image */
@@ -165,7 +168,44 @@
     border-radius: 4px;
 }
 
-/* Disable hover effects on disabled mode */
+/* ==============================================
+   Click-to-Zoom Styles
+   ============================================== */
+
+.rp-click-zoom-item {
+    cursor: zoom-in;
+    overflow: hidden;
+}
+
+.rp-click-zoom-item.rp-click-zoomed {
+    cursor: zoom-out;
+}
+
+.rp-click-zoom-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.rp-click-zoom-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==============================================
+   Zoom Mode Cursors & Behaviors
+   ============================================== */
+
+/* Disabled */
 .rp-zoom-disabled .rp-gallery-item {
     cursor: default;
 }
@@ -174,13 +214,18 @@
     transform: none;
 }
 
-/* Lightbox mode cursor */
+/* Lightbox */
 .rp-zoom-lightbox .rp-gallery-item {
     cursor: zoom-in;
 }
 
 .rp-zoom-lightbox .rp-gallery-item:hover img {
     transform: scale(1.02);
+}
+
+/* Click zoom */
+.rp-zoom-click .rp-gallery-item:hover img {
+    transform: none;
 }
 
 /* ==============================================
@@ -222,7 +267,8 @@
 
     /* Hide zoom elements on mobile */
     .rp-zoom-lens,
-    .rp-zoom-result {
+    .rp-zoom-result,
+    .rp-click-zoom-overlay {
         display: none !important;
     }
 }
@@ -310,6 +356,45 @@
     font-weight: 400;
 }
 
+/* Ensure close button is always visible */
+.glightbox-container .gclose {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    top: 15px !important;
+    right: 15px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.glightbox-container .gclose svg {
+    width: 20px;
+    height: 20px;
+}
+
+.glightbox-container .gclose:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+/* Navigation arrows */
+.glightbox-container .gnext,
+.glightbox-container .gprev {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+}
+
+.glightbox-container .gnext:hover,
+.glightbox-container .gprev:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
 /* ==============================================
    Accessibility
    ============================================== */
@@ -356,7 +441,8 @@
 
     .rp-carousel-indicators,
     .rp-zoom-lens,
-    .rp-zoom-result {
+    .rp-zoom-result,
+    .rp-click-zoom-overlay {
         display: none;
     }
 }

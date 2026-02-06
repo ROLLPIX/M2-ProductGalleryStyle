@@ -16,6 +16,7 @@ class ZoomType implements OptionSourceInterface
 {
     public const ZOOM_HOVER = 'hover';
     public const ZOOM_LIGHTBOX = 'lightbox';
+    public const ZOOM_CLICK = 'click';
     public const ZOOM_DISABLED = 'disabled';
 
     /**
@@ -26,6 +27,7 @@ class ZoomType implements OptionSourceInterface
         return [
             ['value' => self::ZOOM_HOVER, 'label' => __('Hover Magnifier')],
             ['value' => self::ZOOM_LIGHTBOX, 'label' => __('Lightbox (GLightbox)')],
+            ['value' => self::ZOOM_CLICK, 'label' => __('Click to Zoom (inside image)')],
             ['value' => self::ZOOM_DISABLED, 'label' => __('Disabled')]
         ];
     }
