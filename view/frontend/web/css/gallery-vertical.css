@@ -93,12 +93,24 @@
     box-sizing: border-box;
 }
 
-/* Reset Luma's default width restrictions */
+/* Reset Luma/Hyva width restrictions on product info inside our wrapper */
 .catalog-product-view.page-layout-1column .rp-product-wrapper .product-info-main,
 .catalog-product-view .rp-product-wrapper .product-info-main {
-    width: 100%;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
     float: none;
     padding-left: 0;
+    margin-left: 0;
+    margin-right: 0;
+    flex: none;
+}
+
+/* Reset Hyva/Tailwind width restrictions on gallery column */
+.rp-product-wrapper .rp-product-gallery {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
 }
 
 /* Hide original Fotorama gallery elements */

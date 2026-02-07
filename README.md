@@ -320,6 +320,10 @@ Contributions are welcome! Please follow these steps:
 
 ## Changelog
 
+### 1.2.2 (2026-02-07)
+- Fix Hyva theme compatibility: product info column now fills full grid width
+- Reset Tailwind/Hyva width restrictions on product-info-main and gallery columns
+
 ### 1.2.1 (2026-02-06)
 - Add PHP 8.4 support
 
