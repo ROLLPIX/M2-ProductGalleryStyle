@@ -114,6 +114,13 @@
     flex: none;
 }
 
+/* Hyva: force inner section to single column (our wrapper handles the 2-col grid) */
+.rp-product-wrapper .product-info-main > section {
+    display: block !important;
+    max-width: none !important;
+    padding: 0 !important;
+}
+
 /* Reset Hyva/Tailwind width restrictions on gallery column */
 .rp-product-wrapper .rp-product-gallery {
     width: 100% !important;
