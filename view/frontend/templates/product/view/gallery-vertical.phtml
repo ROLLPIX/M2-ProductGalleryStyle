@@ -1,6 +1,6 @@
 <?php
 /**
- * Rollpix ProductGallery - Vertical Gallery Template
+ * Rollpix ProductGallery - Gallery Template
  *
  * @category  Rollpix
  * @package   Rollpix_ProductGallery
@@ -32,6 +32,7 @@ if (!$images || $images->getSize() === 0) {
 $galleryConfig = $block->getData('gallery_config');
 
 // Get configuration from ViewModel
+$layoutType = $galleryConfig->getLayoutType();
 $zoomType = $galleryConfig->getZoomType();
 $zoomLevel = $galleryConfig->getZoomLevel();
 $zoomPosition = $galleryConfig->getZoomPosition();
@@ -40,21 +41,28 @@ $columnRatio = $galleryConfig->getColumnRatio();
 $imageGap = $galleryConfig->getImageGap();
 $mobileBehavior = $galleryConfig->getMobileBehavior();
 $stickyEnabled = $galleryConfig->isStickyEnabled();
+$stickyMode = $galleryConfig->getStickyMode();
 $stickyOffset = $galleryConfig->getStickyOffset();
 
 // Build CSS classes
 $wrapperClasses = [
     'rp-product-gallery',
+    'rp-layout-' . $layoutType,
     'rp-gallery-position-' . $galleryPosition,
     'rp-mobile-' . $mobileBehavior,
     'rp-zoom-' . $zoomType
 ];
+
+if ($stickyEnabled) {
+    $wrapperClasses[] = 'rp-sticky-' . $stickyMode;
+}
 
 // Get JS config
 $jsConfig = $galleryConfig->getJsConfigJson();
 
 // Get column CSS values
 $columnCss = $galleryConfig->getColumnCss();
+$gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
 ?>
 
 <style>
@@ -65,12 +73,32 @@ $columnCss = $galleryConfig->getColumnCss();
         --rp-info-order: <?= (int)$columnCss['infoOrder'] ?>;
         --rp-sticky-offset: <?= (int)$stickyOffset ?>px;
         --rp-image-gap: <?= (int)$imageGap ?>px;
+        <?php if ($layoutType === 'grid'): ?>
+        --rp-grid-cols: <?= (int)$gridImageColumns ?>;
+        <?php endif; ?>
     }
     <?php if (!$stickyEnabled): ?>
     .rp-product-wrapper .product-info-main {
         position: static !important;
     }
+    <?php elseif ($stickyMode === 'frame'): ?>
+    .rp-product-wrapper .product-info-main {
+        max-height: calc(100vh - <?= (int)$stickyOffset ?>px - 20px);
+        overflow-y: auto;
+    }
+    <?php else: /* scroll mode */ ?>
+    .rp-product-wrapper .product-info-main {
+        max-height: none;
+        overflow-y: visible;
+    }
     <?php endif; ?>
+    @media screen and (max-width: 767px) {
+        .rp-product-wrapper .product-info-main {
+            position: relative !important;
+            max-height: none !important;
+            overflow-y: visible !important;
+        }
+    }
 </style>
 
 <div class="<?= $block->escapeHtmlAttr(implode(' ', $wrapperClasses)) ?>"
@@ -92,9 +120,7 @@ $columnCss = $galleryConfig->getColumnCss();
                <?php endif; ?>>
                 <img src="<?= $block->escapeUrl($mediumImageUrl) ?>"
                      alt="<?= $block->escapeHtmlAttr($imageLabel) ?>"
-                     loading="lazy"
-                     width="600"
-                     height="600"/>
+                     loading="lazy"/>
             </a>
         <?php endforeach; ?>
     </div>

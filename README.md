@@ -1,6 +1,6 @@
 # Rollpix Product Gallery for Magento 2
 
-A modern, editorial-style product gallery module for Magento 2 that replaces the default Fotorama gallery with a vertical scrolling layout. Features a sticky product info panel, hover zoom, lightbox support, and mobile carousel.
+A modern, editorial-style product gallery module for Magento 2 that replaces the default Fotorama gallery with vertical and grid scrolling layouts. Features sticky product info panel with multiple modes, hover/click/lightbox zoom, and mobile carousel with sticky behavior.
 
 ![Magento 2](https://img.shields.io/badge/Magento-2.4.7--2.4.8-orange.svg)
 ![PHP](https://img.shields.io/badge/PHP-8.1--8.3-blue.svg)
@@ -9,31 +9,37 @@ A modern, editorial-style product gallery module for Magento 2 that replaces the
 ## Features
 
 ### Layout
-- **Vertical Gallery Layout**: Images stacked vertically on one side, product info on the other
+- **Vertical Layout**: Images stacked vertically in one column, product info on the other
+- **Grid Layout**: Images in a multi-column grid (2 or 3 columns) with product info sidebar
 - **Configurable Position**: Gallery on left or right side
-- **Flexible Column Ratios**: Choose between 40/60, 50/50, or 60/40 splits
+- **Flexible Column Ratios**: Vertical mode: 40/60, 50/50, or 60/40. Grid mode: 70/30, 75/25, or 80/20
 - **Adjustable Image Gap**: Configure spacing between images (0-40px)
 
 ### Zoom Options
-- **Hover Magnifier**: Native-style zoom on mouse hover with lens indicator
-- **Lightbox Mode**: Full-screen image viewing with GLightbox
-- **Configurable Zoom Level**: 2x to 5x magnification
-- **Zoom Position**: Display zoomed image on the right side or inside the image
+- **Hover Magnifier**: Zoom on mouse hover with lens indicator and magnified view (right side or inside image)
+- **Click Zoom**: Click to zoom into the image in-place, click again to reset
+- **Lightbox Mode**: Full-screen image viewing with GLightbox navigation
+- **Configurable Zoom Level**: 2x to 10x magnification
+- **Disabled Option**: Turn off zoom entirely
 
 ### Sticky Panel
-- **Sticky Product Info**: Product details remain visible while scrolling through images
+- **Two Sticky Modes**:
+  - **Frame Mode**: Info panel scrolls inside a fixed-height container
+  - **Natural Scroll Mode**: Info panel stays fixed at the top while images scroll (like Quiksilver.com)
 - **Configurable Offset**: Adjust top offset for sites with fixed headers
 - **Toggle On/Off**: Enable or disable sticky behavior
 
 ### Mobile Experience
-- **Responsive Design**: Optimized for all screen sizes
-- **Swipeable Carousel**: Touch-friendly image carousel on mobile
+- **Swipeable Carousel**: Touch-friendly image carousel with overlay dot indicators
+- **Sticky Carousel**: Image stays fixed at top while product info scrolls over it
+- **Dynamic Slide Height**: Wrapper adapts to each slide's image height (no blank space)
 - **Vertical Stack Option**: Alternative stack layout for mobile
 
 ### Performance
 - **Lazy Loading**: Native lazy loading for images
 - **Lightweight**: No heavy dependencies, GLightbox is only ~2KB gzipped
 - **CSS Variables**: Dynamic styling without page reload
+- **requestAnimationFrame**: Smooth scroll-based interactions
 
 ## Requirements
 
@@ -78,21 +84,32 @@ bin/magento cache:flush
 
 Navigate to **Stores > Configuration > Rollpix > Product Gallery**
 
-### Zoom Settings
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| Zoom Type | Hover Magnifier, Lightbox, or Disabled | Hover |
-| Zoom Level | Magnification level (2x-5x) | 3x |
-| Zoom Window Position | Right Side or Inside Image | Right |
-
 ### Layout Settings
 
 | Option | Description | Default |
 |--------|-------------|---------|
+| Layout Type | Vertical (single column) or Grid (multi-column) | Vertical |
 | Gallery Position | Left or Right | Left |
-| Column Ratio | 40/60, 50/50, or 60/40 | 50/50 |
+| Column Ratio | 40/60, 50/50, or 60/40 (vertical mode) | 50/50 |
+| Grid Ratio | 70/30, 75/25, or 80/20 (grid mode) | 70/30 |
+| Image Columns in Grid | 2 or 3 columns (grid mode) | 2 |
 | Gap Between Images | Spacing in pixels (0-40) | 20px |
+
+### Zoom Settings
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| Zoom Type | Hover Magnifier, Click Zoom, Lightbox, or Disabled | Hover |
+| Zoom Level | Magnification level (2x-10x) | 3x |
+| Zoom Window Position | Right Side or Inside Image (hover mode) | Right |
+
+### Sticky Panel Settings
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| Enable Sticky | Keep product info fixed while scrolling | Yes |
+| Sticky Mode | Frame (scrollable panel) or Natural Scroll (fixed at top) | Natural Scroll |
+| Top Offset | Distance from top in pixels | 20px |
 
 ### Mobile Settings
 
@@ -100,16 +117,9 @@ Navigate to **Stores > Configuration > Rollpix > Product Gallery**
 |--------|-------------|---------|
 | Mobile Behavior | Vertical Stack or Swipeable Carousel | Carousel |
 
-### Sticky Panel Settings
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| Enable Sticky | Keep product info fixed while scrolling | Yes |
-| Top Offset | Distance from top in pixels | 20px |
-
 ## Screenshots
 
-### Desktop - Gallery Left (50/50)
+### Desktop - Vertical Layout (50/50)
 ```
 ┌─────────────────────────────────────────────┐
 │  ┌─────────────┐    ┌─────────────────────┐ │
@@ -130,26 +140,32 @@ Navigate to **Stores > Configuration > Rollpix > Product Gallery**
 └─────────────────────────────────────────────┘
 ```
 
-### Hover Zoom (Right Position)
+### Desktop - Grid Layout (70/30, 2 columns)
 ```
-┌─────────────────┐  ┌─────────────────┐
-│    ┌─────┐      │  │                 │
-│    │Lens │      │  │   Zoomed Area   │
-│    └─────┘      │  │                 │
-│                 │  │                 │
-│   Main Image    │  │                 │
-└─────────────────┘  └─────────────────┘
+┌──────────────────────────────────┬──────────────┐
+│  ┌──────────┐  ┌──────────┐     │              │
+│  │  Img 1   │  │  Img 2   │     │  Product     │
+│  └──────────┘  └──────────┘     │  $99.00      │
+│  ┌──────────┐  ┌──────────┐     │              │
+│  │  Img 3   │  │  Img 4   │     │  [Add to     │
+│  └──────────┘  └──────────┘     │   Cart]      │
+│  ┌──────────┐                   │              │
+│  │  Img 5   │                   │  (Sticky)    │
+│  └──────────┘                   │              │
+│         70%                     │     30%      │
+└──────────────────────────────────┴──────────────┘
 ```
 
-### Mobile Carousel
+### Mobile Carousel (Sticky)
 ```
 ┌───────────────┐
-│ ◄  Image 1  ► │
-│               │
-│   ● ○ ○ ○ ○   │
+│               │  ← Image stays fixed
+│   Image 1     │    at top while
+│               │    scrolling down
+│   ● ○ ○ ○ ○   │  ← Overlay indicators
 ├───────────────┤
-│ Product Title │
-│ $99.00        │
+│ Product Title │  ← Scrolls over
+│ $99.00        │    the image
 │ [Add to Cart] │
 └───────────────┘
 ```
@@ -161,6 +177,7 @@ app/code/Rollpix/ProductGallery/
 ├── registration.php
 ├── composer.json
 ├── README.md
+├── LICENSE
 ├── etc/
 │   ├── module.xml
 │   ├── config.xml
@@ -171,12 +188,16 @@ app/code/Rollpix/ProductGallery/
 ├── Model/
 │   ├── Config.php
 │   └── Config/Source/
+│       ├── LayoutType.php
+│       ├── ColumnRatio.php
+│       ├── GridRatio.php
+│       ├── GridImageColumns.php
+│       ├── GalleryPosition.php
+│       ├── ImageGap.php
 │       ├── ZoomType.php
 │       ├── ZoomLevel.php
 │       ├── ZoomPosition.php
-│       ├── GalleryPosition.php
-│       ├── ColumnRatio.php
-│       ├── ImageGap.php
+│       ├── StickyMode.php
 │       └── MobileBehavior.php
 ├── ViewModel/
 │   └── GalleryConfig.php
@@ -193,7 +214,8 @@ app/code/Rollpix/ProductGallery/
             │   └── gallery-vertical.css
             └── js/
                 ├── gallery-zoom.js
-                └── gallery-carousel.js
+                ├── gallery-carousel.js
+                └── gallery-sticky.js
 ```
 
 ## Customization
@@ -210,6 +232,7 @@ The module uses CSS custom properties that can be overridden:
     --rp-info-order: 2;        /* Info panel order (1 or 2) */
     --rp-sticky-offset: 20px;  /* Sticky top offset */
     --rp-image-gap: 20px;      /* Gap between images */
+    --rp-grid-cols: 2;         /* Grid layout: image columns */
 }
 ```
 
@@ -292,11 +315,27 @@ Contributions are welcome! Please follow these steps:
 - [ ] Video support in gallery
 - [ ] Thumbnail strip option
 - [ ] Image counter overlay
-- [ ] Zoom on hover without click
 - [ ] Custom animations/transitions
 - [ ] Integration with PageBuilder
 
 ## Changelog
+
+### 1.2.0 (2026-02-06)
+- Mobile carousel: sticky image at top while scrolling (info scrolls over)
+- Mobile carousel: overlay dot indicators on image
+- Mobile carousel: dynamic wrapper height per slide (eliminates blank space)
+- Mobile: overflow fixes for all Magento wrapper ancestors to support sticky
+- Mobile: `-webkit-sticky` prefix for iOS Safari support
+
+### 1.1.0 (2026-02-05)
+- Grid layout: multi-column image grid with info sidebar
+- Grid configurable ratios: 70/30, 75/25, 80/20
+- Grid configurable image columns: 2 or 3
+- Click zoom mode: click to zoom in-place, click again to reset
+- Sticky panel modes: Frame (scrollable) and Natural Scroll (fixed at top)
+- Zoom level extended to 10x
+- Zoom result uses fixed viewport positioning (follows cursor)
+- Admin config groups reordered: Layout, Zoom, Sticky, Mobile
 
 ### 1.0.0 (2025-01-26)
 - Initial release

@@ -1,5 +1,5 @@
 /**
- * Rollpix ProductGallery - Vertical Layout Styles
+ * Rollpix ProductGallery - Layout Styles
  *
  * @category  Rollpix
  * @package   Rollpix_ProductGallery
@@ -16,6 +16,7 @@
     --rp-info-order: 2;
     --rp-sticky-offset: 20px;
     --rp-image-gap: 20px;
+    --rp-grid-cols: 2;
 }
 
 /* ==============================================
@@ -35,9 +36,24 @@
     order: var(--rp-gallery-order);
 }
 
-.rp-gallery-images {
+/* Vertical layout: single column of images */
+.rp-layout-vertical .rp-gallery-images {
     display: flex;
     flex-direction: column;
+    gap: var(--rp-image-gap);
+}
+
+/* ==============================================
+   Grid Layout: Multi-column images + info sidebar
+   ============================================== */
+
+.rp-layout-grid .rp-gallery-images {
+    display: grid;
+    grid-template-columns: repeat(var(--rp-grid-cols, 2), 1fr);
+    gap: var(--rp-image-gap);
+}
+
+.rp-gallery-images {
     gap: var(--rp-image-gap);
 }
 
@@ -73,8 +89,6 @@
     position: sticky;
     top: var(--rp-sticky-offset);
     align-self: start;
-    max-height: calc(100vh - var(--rp-sticky-offset) - 20px);
-    overflow-y: auto;
     width: 100%;
     box-sizing: border-box;
 }
@@ -146,14 +160,11 @@
     visibility: visible;
 }
 
-/* Zoom result - right side (compact) */
-.rp-zoom-result-right {
-    position: absolute;
-    left: calc(100% + 15px);
-    top: 0;
+/* Zoom result - fixed to viewport (follows cursor) */
+.rp-zoom-result-fixed {
+    position: fixed;
     border-radius: 6px;
-    max-width: 300px;
-    max-height: 300px;
+    z-index: 9000;
 }
 
 /* Zoom result - inside image */
@@ -233,11 +244,20 @@
    ============================================== */
 
 @media screen and (max-width: 767px) {
+    /* Override theme overflow on all ancestors to allow sticky */
+    .catalog-product-view .page-wrapper,
+    .catalog-product-view .page-main,
+    .catalog-product-view .columns,
+    .catalog-product-view .column.main {
+        overflow: visible !important;
+    }
+
     .rp-product-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 0;
         margin-bottom: 20px;
+        overflow: visible !important;
     }
 
     .rp-product-gallery {
@@ -245,16 +265,32 @@
         width: 100%;
     }
 
+    /* Carousel: gallery sticks at top, info scrolls over it */
+    .rp-carousel-active {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1;
+    }
+
     .rp-product-wrapper .product-info-main {
         order: 2 !important;
-        position: static !important;
-        max-height: none;
-        overflow-y: visible;
+        position: relative !important;
+        z-index: 2;
+        background: #fff;
+        max-height: none !important;
+        overflow-y: visible !important;
         width: 100%;
+        padding-top: 10px;
     }
 
     .rp-gallery-images {
         gap: 10px;
+    }
+
+    /* Grid layout collapses to single column on mobile */
+    .rp-layout-grid .rp-gallery-images {
+        grid-template-columns: 1fr;
     }
 
     .rp-gallery-item {
@@ -271,6 +307,37 @@
     .rp-click-zoom-overlay {
         display: none !important;
     }
+
+    /* Carousel: limit tall images to viewport height */
+    .rp-carousel-slide img {
+        max-height: 90vh;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Carousel: overlay indicators on image */
+    .rp-carousel-active .rp-carousel-indicators {
+        display: flex !important;
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        padding: 0;
+    }
+
+    .rp-carousel-active .rp-carousel-dot {
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .rp-carousel-active .rp-carousel-dot:hover {
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .rp-carousel-active .rp-carousel-dot.active {
+        background: #fff;
+    }
 }
 
 /* ==============================================
@@ -280,6 +347,7 @@
 .rp-carousel-active .rp-carousel-wrapper {
     overflow: hidden;
     position: relative;
+    transition: height 0.3s ease;
 }
 
 .rp-carousel-track {

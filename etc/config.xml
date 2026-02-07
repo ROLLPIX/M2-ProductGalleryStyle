@@ -19,8 +19,11 @@
             </zoom>
             <!-- Layout Settings -->
             <layout>
+                <type>vertical</type>
                 <gallery_position>left</gallery_position>
                 <column_ratio>50_50</column_ratio>
+                <grid_ratio>70_30</grid_ratio>
+                <grid_image_columns>2</grid_image_columns>
                 <image_gap>20</image_gap>
             </layout>
             <!-- Mobile Settings -->
@@ -30,6 +33,7 @@
             <!-- Sticky Settings -->
             <sticky>
                 <enabled>1</enabled>
+                <mode>scroll</mode>
                 <offset>20</offset>
             </sticky>
         </rollpix_gallery>

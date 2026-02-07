@@ -29,7 +29,7 @@
             <group id="zoom"
                    translate="label"
                    type="text"
-                   sortOrder="10"
+                   sortOrder="20"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
@@ -55,10 +55,10 @@
                        showInWebsite="1"
                        showInStore="1">
                     <label>Zoom Level</label>
-                    <comment>Magnification level for hover zoom</comment>
+                    <comment>Magnification level for hover and click zoom</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ZoomLevel</source_model>
                     <depends>
-                        <field id="type">hover</field>
+                        <field id="type" separator=",">hover,click</field>
                     </depends>
                 </field>
 
@@ -82,11 +82,23 @@
             <group id="layout"
                    translate="label"
                    type="text"
-                   sortOrder="20"
+                   sortOrder="10"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
                 <label>Layout Settings</label>
+
+                <field id="type"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="5"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Layout Type</label>
+                    <comment>Vertical: single column of images. Grid: multi-column image grid with info sidebar.</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\LayoutType</source_model>
+                </field>
 
                 <field id="gallery_position"
                        translate="label comment"
@@ -108,8 +120,41 @@
                        showInWebsite="1"
                        showInStore="1">
                     <label>Column Ratio</label>
-                    <comment>Width ratio between gallery and product info columns</comment>
+                    <comment>Width ratio between gallery and product info columns (vertical layout)</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ColumnRatio</source_model>
+                    <depends>
+                        <field id="type">vertical</field>
+                    </depends>
+                </field>
+
+                <field id="grid_ratio"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="25"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Grid Ratio</label>
+                    <comment>Width ratio between image grid and product info sidebar (grid layout)</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\GridRatio</source_model>
+                    <depends>
+                        <field id="type">grid</field>
+                    </depends>
+                </field>
+
+                <field id="grid_image_columns"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="26"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Image Columns in Grid</label>
+                    <comment>Number of image columns within the grid area</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\GridImageColumns</source_model>
+                    <depends>
+                        <field id="type">grid</field>
+                    </depends>
                 </field>
 
                 <field id="image_gap"
@@ -129,7 +174,7 @@
             <group id="mobile"
                    translate="label"
                    type="text"
-                   sortOrder="30"
+                   sortOrder="40"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
@@ -152,7 +197,7 @@
             <group id="sticky"
                    translate="label"
                    type="text"
-                   sortOrder="40"
+                   sortOrder="30"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
@@ -168,6 +213,21 @@
                     <label>Enable Sticky</label>
                     <comment>Keep product info panel fixed while scrolling through images</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="mode"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="15"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Sticky Mode</label>
+                    <comment>Frame: info scrolls inside a fixed-height panel. Natural scroll: info scrolls with the page and sticks when its bottom reaches the viewport bottom.</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\StickyMode</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
 
                 <field id="offset"

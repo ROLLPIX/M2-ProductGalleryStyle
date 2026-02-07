@@ -36,10 +36,17 @@ define([
         initHoverZoom();
 
         /* ===========================================================
-           HOVER ZOOM - Magnifier lens + result panel on the right
+           HOVER ZOOM - Magnifier lens + result panel
            =========================================================== */
         function initHoverZoom() {
             var $items = $gallery.find('.rp-gallery-item');
+
+            // For "right" position: create a single shared fixed result panel
+            var $fixedResult = null;
+            if (zoomPosition === 'right') {
+                $fixedResult = $('<div class="rp-zoom-result rp-zoom-result-fixed"></div>');
+                $('body').append($fixedResult);
+            }
 
             $items.each(function () {
                 var $item = $(this);
@@ -56,23 +63,20 @@ define([
                 $zoomWrapper = $item.parent();
 
                 var $zoomLens = $('<div class="rp-zoom-lens"></div>');
-                var $zoomResult = $('<div class="rp-zoom-result"></div>');
-
                 $item.append($zoomLens);
 
-                if (zoomPosition === 'right') {
-                    $zoomWrapper.append($zoomResult);
-                    $zoomResult.addClass('rp-zoom-result-right');
-                } else {
+                // For "inside" position: result is inside each item
+                var $zoomResult;
+                if (zoomPosition === 'inside') {
+                    $zoomResult = $('<div class="rp-zoom-result rp-zoom-result-inside"></div>');
                     $item.append($zoomResult);
-                    $zoomResult.addClass('rp-zoom-result-inside');
+                } else {
+                    $zoomResult = $fixedResult;
                 }
 
                 var largeImage = new Image();
 
                 largeImage.onload = function () {
-                    $zoomResult.css('background-image', 'url("' + largeImageUrl + '")');
-
                     $item.on('mouseenter.rpzoom', function () {
                         var imgWidth = $img.width();
                         var imgHeight = $img.height();
@@ -85,14 +89,15 @@ define([
                             height: lensHeight + 'px'
                         });
 
+                        $zoomResult.css('background-image', 'url("' + largeImageUrl + '")');
+
                         if (zoomPosition === 'right') {
-                            // Compact result: 60% of image size
-                            var resultW = Math.round(imgWidth * 0.6);
-                            var resultH = Math.round(imgHeight * 0.6);
+                            // Fixed square size regardless of image proportions
+                            var resultSize = 300;
 
                             $zoomResult.css({
-                                width: resultW + 'px',
-                                height: resultH + 'px',
+                                width: resultSize + 'px',
+                                height: resultSize + 'px',
                                 backgroundSize: largeImage.width + 'px ' + largeImage.height + 'px'
                             });
                         } else {
@@ -133,6 +138,34 @@ define([
                         $zoomResult.css('background-position',
                             -(lensX * ratioX) + 'px ' + -(lensY * ratioY) + 'px'
                         );
+
+                        // Position fixed result relative to viewport
+                        if (zoomPosition === 'right') {
+                            var imgRect = $img[0].getBoundingClientRect();
+                            var resultW = $zoomResult.outerWidth();
+                            var resultH = $zoomResult.outerHeight();
+
+                            // Place to the right of the image, vertically centered on cursor
+                            var fixedLeft = imgRect.right + 15;
+                            var fixedTop = e.clientY - resultH / 2;
+
+                            // Keep within viewport bounds
+                            var viewportW = window.innerWidth;
+                            var viewportH = window.innerHeight;
+
+                            // If it overflows right, place to the left of the image
+                            if (fixedLeft + resultW > viewportW - 10) {
+                                fixedLeft = imgRect.left - resultW - 15;
+                            }
+
+                            // Clamp vertical position
+                            fixedTop = Math.max(10, Math.min(fixedTop, viewportH - resultH - 10));
+
+                            $zoomResult.css({
+                                left: fixedLeft + 'px',
+                                top: fixedTop + 'px'
+                            });
+                        }
                     });
                 };
 

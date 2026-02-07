@@ -91,8 +91,8 @@ define([
             // Remove indicators
             $gallery.find('.rp-carousel-indicators').remove();
 
-            // Remove classes
-            $wrapper.removeClass('rp-carousel-wrapper');
+            // Remove classes and reset height
+            $wrapper.removeClass('rp-carousel-wrapper').css('height', '');
             $gallery.removeClass('rp-carousel-active');
 
             // Remove events
@@ -122,6 +122,25 @@ define([
             var translateX = -(currentIndex * slideWidth);
 
             $track.css('transform', 'translateX(' + translateX + 'px)');
+
+            // Adjust wrapper height to match current slide (prevents blank space)
+            var $currentSlide = $items.eq(currentIndex);
+            var img = $currentSlide.find('img')[0];
+
+            if (img) {
+                var setHeight = function () {
+                    var h = img.offsetHeight;
+                    if (h > 0) {
+                        $wrapper.css('height', h + 'px');
+                    }
+                };
+
+                if (img.complete && img.naturalHeight > 0) {
+                    setHeight();
+                } else {
+                    $(img).one('load', setHeight);
+                }
+            }
 
             // Update indicators
             $indicators.removeClass('active');

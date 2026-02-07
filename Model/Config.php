@@ -18,11 +18,15 @@ class Config
     private const XML_PATH_ZOOM_TYPE = 'rollpix_gallery/zoom/type';
     private const XML_PATH_ZOOM_LEVEL = 'rollpix_gallery/zoom/level';
     private const XML_PATH_ZOOM_POSITION = 'rollpix_gallery/zoom/position';
+    private const XML_PATH_LAYOUT_TYPE = 'rollpix_gallery/layout/type';
     private const XML_PATH_GALLERY_POSITION = 'rollpix_gallery/layout/gallery_position';
     private const XML_PATH_COLUMN_RATIO = 'rollpix_gallery/layout/column_ratio';
+    private const XML_PATH_GRID_RATIO = 'rollpix_gallery/layout/grid_ratio';
+    private const XML_PATH_GRID_IMAGE_COLUMNS = 'rollpix_gallery/layout/grid_image_columns';
     private const XML_PATH_IMAGE_GAP = 'rollpix_gallery/layout/image_gap';
     private const XML_PATH_MOBILE_BEHAVIOR = 'rollpix_gallery/mobile/behavior';
     private const XML_PATH_STICKY_ENABLED = 'rollpix_gallery/sticky/enabled';
+    private const XML_PATH_STICKY_MODE = 'rollpix_gallery/sticky/mode';
     private const XML_PATH_STICKY_OFFSET = 'rollpix_gallery/sticky/offset';
 
     private ScopeConfigInterface $scopeConfig;
@@ -59,6 +63,15 @@ class Config
         );
     }
 
+    public function getLayoutType(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_LAYOUT_TYPE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 'vertical';
+    }
+
     public function getGalleryPosition(?int $storeId = null): string
     {
         return (string) $this->scopeConfig->getValue(
@@ -75,6 +88,24 @@ class Config
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    public function getGridRatio(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_GRID_RATIO,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: '70_30';
+    }
+
+    public function getGridImageColumns(?int $storeId = null): int
+    {
+        return (int) $this->scopeConfig->getValue(
+            self::XML_PATH_GRID_IMAGE_COLUMNS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 2;
     }
 
     public function getImageGap(?int $storeId = null): int
@@ -104,6 +135,15 @@ class Config
         );
     }
 
+    public function getStickyMode(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_STICKY_MODE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 'scroll';
+    }
+
     public function getStickyOffset(?int $storeId = null): int
     {
         return (int) $this->scopeConfig->getValue(
@@ -125,8 +165,11 @@ class Config
                 'position' => $this->getZoomPosition($storeId)
             ],
             'layout' => [
+                'type' => $this->getLayoutType($storeId),
                 'galleryPosition' => $this->getGalleryPosition($storeId),
                 'columnRatio' => $this->getColumnRatio($storeId),
+                'gridRatio' => $this->getGridRatio($storeId),
+                'gridImageColumns' => $this->getGridImageColumns($storeId),
                 'imageGap' => $this->getImageGap($storeId)
             ],
             'mobile' => [
@@ -134,6 +177,7 @@ class Config
             ],
             'sticky' => [
                 'enabled' => $this->isStickyEnabled($storeId),
+                'mode' => $this->getStickyMode($storeId),
                 'offset' => $this->getStickyOffset($storeId)
             ]
         ];

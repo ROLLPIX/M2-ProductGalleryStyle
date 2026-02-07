@@ -8,7 +8,8 @@ var config = {
     map: {
         '*': {
             'rpGalleryZoom': 'Rollpix_ProductGallery/js/gallery-zoom',
-            'rpGalleryCarousel': 'Rollpix_ProductGallery/js/gallery-carousel'
+            'rpGalleryCarousel': 'Rollpix_ProductGallery/js/gallery-carousel',
+            'rpStickyScroll': 'Rollpix_ProductGallery/js/gallery-sticky'
         }
     }
 };
