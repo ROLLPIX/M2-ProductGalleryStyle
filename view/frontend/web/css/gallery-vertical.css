@@ -24,11 +24,19 @@
    ============================================== */
 
 .rp-product-wrapper {
-    display: grid;
-    grid-template-columns: var(--rp-col-1) var(--rp-col-2);
+    display: grid !important;
+    grid-template-columns: var(--rp-col-1) var(--rp-col-2) !important;
     gap: 40px;
     align-items: start;
     margin-bottom: 40px;
+}
+
+/* Force all direct children of our wrapper to fill their grid cell */
+.rp-product-wrapper > * {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    flex: none !important;
 }
 
 /* Gallery column */
