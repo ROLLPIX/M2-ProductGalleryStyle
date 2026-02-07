@@ -320,6 +320,9 @@ Contributions are welcome! Please follow these steps:
 
 ## Changelog
 
+### 1.2.4 (2026-02-07)
+- Fix Hyva: force inner product-info `<section>` to single column layout (Hyva wraps product info in a Tailwind grid section)
+
 ### 1.2.3 (2026-02-07)
 - Force 1column page layout on product page for Hyva compatibility
 - Force grid display and full-width on all direct children of wrapper
