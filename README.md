@@ -320,6 +320,11 @@ Contributions are welcome! Please follow these steps:
 
 ## Changelog
 
+### 1.2.3 (2026-02-07)
+- Force 1column page layout on product page for Hyva compatibility
+- Force grid display and full-width on all direct children of wrapper
+- Hyva/Tailwind width overrides with !important on wrapper children
+
 ### 1.2.2 (2026-02-07)
 - Fix Hyva theme compatibility: product info column now fills full grid width
 - Reset Tailwind/Hyva width restrictions on product-info-main and gallery columns

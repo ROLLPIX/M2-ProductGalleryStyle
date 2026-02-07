@@ -3,7 +3,7 @@
     "description": "Modern editorial-style product gallery for Magento 2 with vertical and grid layouts, hover zoom, lightbox, sticky panel, and mobile carousel",
     "type": "magento2-module",
     "license": "MIT",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "keywords": [
         "magento2",
         "magento",
