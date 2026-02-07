@@ -3,7 +3,7 @@
 A modern, editorial-style product gallery module for Magento 2 that replaces the default Fotorama gallery with vertical and grid scrolling layouts. Features sticky product info panel with multiple modes, hover/click/lightbox zoom, and mobile carousel with sticky behavior.
 
 ![Magento 2](https://img.shields.io/badge/Magento-2.4.7--2.4.8-orange.svg)
-![PHP](https://img.shields.io/badge/PHP-8.1--8.3-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-8.1--8.4-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 ## Features
@@ -46,7 +46,7 @@ A modern, editorial-style product gallery module for Magento 2 that replaces the
 | Requirement | Version |
 |-------------|---------|
 | Magento | 2.4.7 - 2.4.8 |
-| PHP | 8.1 - 8.3 |
+| PHP | 8.1 - 8.4 |
 | Theme | Luma or Luma-based themes |
 
 ## Installation
@@ -319,6 +319,9 @@ Contributions are welcome! Please follow these steps:
 - [ ] Integration with PageBuilder
 
 ## Changelog
+
+### 1.2.1 (2026-02-06)
+- Add PHP 8.4 support
 
 ### 1.2.0 (2026-02-06)
 - Mobile carousel: sticky image at top while scrolling (info scrolls over)
