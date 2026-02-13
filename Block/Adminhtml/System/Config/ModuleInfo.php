@@ -12,7 +12,7 @@ namespace Rollpix\ProductGallery\Block\Adminhtml\System\Config;
 
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Backend\Block\Context;
+use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Component\ComponentRegistrarInterface;
 use Magento\Framework\Filesystem\Directory\ReadFactory;
 
