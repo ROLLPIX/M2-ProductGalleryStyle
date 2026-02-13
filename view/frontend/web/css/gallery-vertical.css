@@ -61,6 +61,26 @@
     gap: var(--rp-image-gap);
 }
 
+/* ==============================================
+   Fashion Layout: Alternating 1-2 image pattern
+   ============================================== */
+
+.rp-layout-fashion .rp-gallery-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rp-image-gap);
+}
+
+/* Full-width images: positions 1, 4, 7, 10... */
+.rp-layout-fashion .rp-gallery-item:nth-child(3n+1) {
+    grid-column: span 2;
+}
+
+/* Orphan: last image alone in a pair row → full width */
+.rp-layout-fashion .rp-gallery-item:last-child:nth-child(3n+2) {
+    grid-column: span 2;
+}
+
 .rp-gallery-images {
     gap: var(--rp-image-gap);
 }
@@ -491,6 +511,145 @@
 }
 
 /* ==============================================
+   Inline Accordion Tabs
+   ============================================== */
+
+.rp-accordion {
+    margin-top: 30px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.rp-accordion-section {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.rp-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+    font-family: inherit;
+}
+
+.rp-accordion-header:hover {
+    color: #1979c3;
+}
+
+.rp-accordion-header:focus {
+    outline: 2px solid #1979c3;
+    outline-offset: -2px;
+}
+
+.rp-accordion-icon {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    margin-left: 12px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+.rp-accordion-active .rp-accordion-icon {
+    transform: rotate(-135deg);
+}
+
+.rp-accordion-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+}
+
+.rp-accordion-panel.rp-accordion-open {
+    max-height: 2000px;
+}
+
+.rp-accordion-content {
+    padding: 0 0 20px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.rp-accordion-content p {
+    margin: 0 0 12px;
+}
+
+.rp-accordion-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rp-accordion-content table th,
+.rp-accordion-content table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.rp-accordion-content table th {
+    font-weight: 600;
+    color: #333;
+    width: 40%;
+}
+
+/* Description truncation with gradient fade */
+.rp-accordion-truncated {
+    overflow: hidden;
+    position: relative;
+}
+
+.rp-accordion-truncated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    pointer-events: none;
+}
+
+.rp-accordion-readmore {
+    display: block;
+    background: none;
+    border: none;
+    color: #1979c3;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 0 16px;
+    text-decoration: underline;
+    font-family: inherit;
+}
+
+.rp-accordion-readmore:hover {
+    color: #006bb4;
+}
+
+@media screen and (max-width: 767px) {
+    .rp-accordion-header {
+        font-size: 15px;
+        padding: 14px 0;
+    }
+
+    .rp-accordion-content {
+        font-size: 13px;
+    }
+}
+
+/* ==============================================
    Accessibility
    ============================================== */
 
@@ -513,6 +672,14 @@
 
     .rp-zoom-lens,
     .rp-zoom-result {
+        transition: none;
+    }
+
+    .rp-accordion-panel {
+        transition: none;
+    }
+
+    .rp-accordion-icon {
         transition: none;
     }
 }
@@ -539,5 +706,10 @@
     .rp-zoom-result,
     .rp-click-zoom-overlay {
         display: none;
+    }
+
+    .rp-accordion-panel {
+        max-height: none !important;
+        overflow: visible !important;
     }
 }

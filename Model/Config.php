@@ -28,6 +28,8 @@ class Config
     private const XML_PATH_STICKY_ENABLED = 'rollpix_gallery/sticky/enabled';
     private const XML_PATH_STICKY_MODE = 'rollpix_gallery/sticky/mode';
     private const XML_PATH_STICKY_OFFSET = 'rollpix_gallery/sticky/offset';
+    private const XML_PATH_TABS_INLINE_ENABLED = 'rollpix_gallery/tabs/inline_enabled';
+    private const XML_PATH_TABS_DESC_MAX_HEIGHT = 'rollpix_gallery/tabs/description_max_height';
 
     private ScopeConfigInterface $scopeConfig;
 
@@ -153,6 +155,24 @@ class Config
         );
     }
 
+    public function isInlineTabsEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_TABS_INLINE_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function getDescriptionMaxHeight(?int $storeId = null): int
+    {
+        return (int) $this->scopeConfig->getValue(
+            self::XML_PATH_TABS_DESC_MAX_HEIGHT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     /**
      * Get all configuration as array for JS
      */
@@ -179,6 +199,10 @@ class Config
                 'enabled' => $this->isStickyEnabled($storeId),
                 'mode' => $this->getStickyMode($storeId),
                 'offset' => $this->getStickyOffset($storeId)
+            ],
+            'tabs' => [
+                'inlineEnabled' => $this->isInlineTabsEnabled($storeId),
+                'descriptionMaxHeight' => $this->getDescriptionMaxHeight($storeId)
             ]
         ];
     }

@@ -92,6 +92,11 @@ class GalleryConfig implements ArgumentInterface
         return $this->config->getStickyOffset();
     }
 
+    public function isInlineTabsEnabled(): bool
+    {
+        return $this->config->isInlineTabsEnabled();
+    }
+
     /**
      * Get JS configuration as JSON
      */
@@ -108,7 +113,7 @@ class GalleryConfig implements ArgumentInterface
         $layoutType = $this->getLayoutType();
         $position = $this->getGalleryPosition();
 
-        if ($layoutType === 'grid') {
+        if ($layoutType === 'grid' || $layoutType === 'fashion') {
             $gridRatio = $this->getGridRatio();
             $gridRatioMap = [
                 '70_30' => ['7fr', '3fr'],
@@ -121,13 +126,18 @@ class GalleryConfig implements ArgumentInterface
                 $columns = array_reverse($columns);
             }
 
-            return [
+            $result = [
                 'col1' => $columns[0],
                 'col2' => $columns[1],
                 'galleryOrder' => $position === 'left' ? 1 : 2,
-                'infoOrder' => $position === 'left' ? 2 : 1,
-                'gridImageColumns' => $this->getGridImageColumns()
+                'infoOrder' => $position === 'left' ? 2 : 1
             ];
+
+            if ($layoutType === 'grid') {
+                $result['gridImageColumns'] = $this->getGridImageColumns();
+            }
+
+            return $result;
         }
 
         // Vertical layout

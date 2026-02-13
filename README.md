@@ -320,6 +320,11 @@ Contributions are welcome! Please follow these steps:
 
 ## Changelog
 
+### 1.3.0 (2026-02-13)
+- Inline accordion tabs: move product detail tabs (Description, Additional Info, Reviews) inside the product info column as collapsible accordion sections (configurable)
+- Description truncation with gradient fade and "Read more" link (configurable max height)
+- Fashion layout: new alternating 1-2 image pattern (1 full-width, 2 half-width, repeat) with orphan image handling
+
 ### 1.2.4 (2026-02-07)
 - Fix Hyva: force inner product-info `<section>` to single column layout (Hyva wraps product info in a Tailwind grid section)
 

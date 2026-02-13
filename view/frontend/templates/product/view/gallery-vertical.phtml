@@ -57,6 +57,10 @@ if ($stickyEnabled) {
     $wrapperClasses[] = 'rp-sticky-' . $stickyMode;
 }
 
+if ($galleryConfig->isInlineTabsEnabled()) {
+    $wrapperClasses[] = 'rp-inline-tabs';
+}
+
 // Get JS config
 $jsConfig = $galleryConfig->getJsConfigJson();
 
@@ -103,7 +107,7 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
 
 <div class="<?= $block->escapeHtmlAttr(implode(' ', $wrapperClasses)) ?>"
      data-role="rp-gallery"
-     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>}'>
+     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>}'>
 
     <div class="rp-gallery-images">
         <?php foreach ($images as $image): ?>

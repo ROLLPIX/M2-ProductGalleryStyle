@@ -138,7 +138,7 @@
                     <comment>Width ratio between image grid and product info sidebar (grid layout)</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\GridRatio</source_model>
                     <depends>
-                        <field id="type">grid</field>
+                        <field id="type" separator=",">grid,fashion</field>
                     </depends>
                 </field>
 
@@ -190,6 +190,44 @@
                     <label>Mobile Behavior</label>
                     <comment>How images are displayed on mobile devices</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\MobileBehavior</source_model>
+                </field>
+            </group>
+
+            <!-- Tabs Group -->
+            <group id="tabs"
+                   translate="label"
+                   type="text"
+                   sortOrder="25"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Product Tabs</label>
+
+                <field id="inline_enabled"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Inline Accordion Tabs</label>
+                    <comment>Move product detail tabs (Description, Additional Info, Reviews) inside the product info column as collapsible accordion sections</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="description_max_height"
+                       translate="label comment"
+                       type="text"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Description Max Height (px)</label>
+                    <comment>Maximum visible height for description content before showing "Read more" link. Set 0 to disable truncation.</comment>
+                    <validate>validate-digits</validate>
+                    <depends>
+                        <field id="inline_enabled">1</field>
+                    </depends>
                 </field>
             </group>
 

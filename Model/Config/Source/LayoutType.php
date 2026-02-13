@@ -16,6 +16,7 @@ class LayoutType implements OptionSourceInterface
 {
     public const LAYOUT_VERTICAL = 'vertical';
     public const LAYOUT_GRID = 'grid';
+    public const LAYOUT_FASHION = 'fashion';
 
     /**
      * @inheritdoc
@@ -24,7 +25,8 @@ class LayoutType implements OptionSourceInterface
     {
         return [
             ['value' => self::LAYOUT_VERTICAL, 'label' => __('Vertical (single column of images)')],
-            ['value' => self::LAYOUT_GRID, 'label' => __('Grid (multi-column images + info sidebar)')]
+            ['value' => self::LAYOUT_GRID, 'label' => __('Grid (multi-column images + info sidebar)')],
+            ['value' => self::LAYOUT_FASHION, 'label' => __('Fashion (alternating 1-2 pattern)')]
         ];
     }
 }

@@ -36,6 +36,11 @@
                 <mode>scroll</mode>
                 <offset>20</offset>
             </sticky>
+            <!-- Tabs Settings -->
+            <tabs>
+                <inline_enabled>0</inline_enabled>
+                <description_max_height>200</description_max_height>
+            </tabs>
         </rollpix_gallery>
     </default>
 </config>
