@@ -283,6 +283,28 @@
                     </depends>
                 </field>
             </group>
+
+            <!-- Module Info Group -->
+            <group id="info"
+                   translate="label"
+                   type="text"
+                   sortOrder="100"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Module Info</label>
+
+                <field id="module_info"
+                       translate="label"
+                       type="note"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label></label>
+                    <frontend_model>Rollpix\ProductGallery\Block\Adminhtml\System\Config\ModuleInfo</frontend_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>

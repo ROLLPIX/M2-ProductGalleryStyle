@@ -320,6 +320,11 @@ Contributions are welcome! Please follow these steps:
 
 ## Changelog
 
+### 1.3.1 (2026-02-13)
+- Expanded grid/fashion ratio options: 20/80 through 80/20 (13 options in 5% increments)
+- Dynamic ratio parsing in ViewModel (supports any ratio value)
+- Module info panel in admin config: ROLLPIX branding, GitHub repo link, dynamic version from composer.json
+
 ### 1.3.0 (2026-02-13)
 - Inline accordion tabs: move product detail tabs (Description, Additional Info, Reviews) inside the product info column as collapsible accordion sections (configurable)
 - Description truncation with gradient fade and "Read more" link (configurable max height)

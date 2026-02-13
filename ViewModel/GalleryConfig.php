@@ -115,12 +115,10 @@ class GalleryConfig implements ArgumentInterface
 
         if ($layoutType === 'grid' || $layoutType === 'fashion') {
             $gridRatio = $this->getGridRatio();
-            $gridRatioMap = [
-                '70_30' => ['7fr', '3fr'],
-                '75_25' => ['3fr', '1fr'],
-                '80_20' => ['4fr', '1fr']
-            ];
-            $columns = $gridRatioMap[$gridRatio] ?? ['7fr', '3fr'];
+            $parts = explode('_', $gridRatio);
+            $col1 = (int) ($parts[0] ?? 70);
+            $col2 = (int) ($parts[1] ?? 30);
+            $columns = [$col1 . 'fr', $col2 . 'fr'];
 
             if ($position === 'right') {
                 $columns = array_reverse($columns);
@@ -142,12 +140,10 @@ class GalleryConfig implements ArgumentInterface
 
         // Vertical layout
         $ratio = $this->getColumnRatio();
-        $ratioMap = [
-            '40_60' => ['40fr', '60fr'],
-            '50_50' => ['1fr', '1fr'],
-            '60_40' => ['60fr', '40fr']
-        ];
-        $columns = $ratioMap[$ratio] ?? ['1fr', '1fr'];
+        $parts = explode('_', $ratio);
+        $col1 = (int) ($parts[0] ?? 50);
+        $col2 = (int) ($parts[1] ?? 50);
+        $columns = [$col1 . 'fr', $col2 . 'fr'];
 
         if ($position === 'right') {
             $columns = array_reverse($columns);
