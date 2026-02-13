@@ -13,6 +13,7 @@ namespace Rollpix\ProductGallery\Block\Adminhtml\System\Config;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Component\ComponentRegistrarInterface;
 use Magento\Framework\Filesystem\Directory\ReadFactory;
 
@@ -48,7 +49,7 @@ class ModuleInfo extends Field
     {
         try {
             $path = $this->componentRegistrar->getPath(
-                ComponentRegistrarInterface::MODULE,
+                ComponentRegistrar::MODULE,
                 'Rollpix_ProductGallery'
             );
 
