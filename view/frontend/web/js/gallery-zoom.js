@@ -18,7 +18,7 @@ define([
         var zoomLevel = config.zoom ? config.zoom.level : 3;
         var zoomPosition = config.zoom ? config.zoom.position : 'right';
 
-        if (zoomType === 'disabled') {
+        if (zoomType === 'disabled' || zoomType === 'modal') {
             return;
         }
 

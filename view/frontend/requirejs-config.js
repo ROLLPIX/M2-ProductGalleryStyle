@@ -13,7 +13,8 @@ var config = {
             'rpGalleryTabs': 'Rollpix_ProductGallery/js/gallery-tabs',
             'rpGalleryEffects': 'Rollpix_ProductGallery/js/gallery-effects',
             'rpGalleryThumbnails': 'Rollpix_ProductGallery/js/gallery-thumbnails',
-            'rpGallerySlider': 'Rollpix_ProductGallery/js/gallery-slider'
+            'rpGallerySlider': 'Rollpix_ProductGallery/js/gallery-slider',
+            'rpGalleryModalZoom': 'Rollpix_ProductGallery/js/gallery-modal-zoom'
         }
     }
 };

@@ -505,6 +505,21 @@
     display: none;
 }
 
+/* Overlay thumbnails: push slider arrows inward to avoid overlap */
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-slider-prev,
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-slider-prev:hover,
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-slider-prev:focus,
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-slider-prev:active {
+    left: 85px !important;
+}
+
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-slider-next,
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-slider-next:hover,
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-slider-next:focus,
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-slider-next:active {
+    right: 85px !important;
+}
+
 /* Dots overlay: float inside the image */
 .rp-thumbnails-overlay .rp-slider-dots {
     position: absolute;
@@ -695,6 +710,128 @@
 .rp-click-zoom-overlay.active {
     opacity: 1;
     visibility: visible;
+}
+
+/* ==============================================
+   Modal Zoom Styles
+   ============================================== */
+
+/* Modal cursor */
+.rp-zoom-modal .rp-gallery-item {
+    cursor: zoom-in;
+}
+
+.rp-zoom-modal .rp-gallery-item:hover img {
+    transform: scale(1.02);
+}
+
+/* Overlay */
+.rp-modal-zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.92);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.rp-modal-zoom-overlay.rp-modal-active {
+    opacity: 1;
+}
+
+/* Content: vertical image stack */
+.rp-modal-zoom-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 4px;
+}
+
+.rp-modal-zoom-content img {
+    max-width: 90%;
+    max-height: none;
+    width: auto;
+    height: auto;
+    display: block;
+}
+
+/* Close button */
+.rp-modal-zoom-close,
+.rp-modal-zoom-close:hover,
+.rp-modal-zoom-close:focus,
+.rp-modal-zoom-close:active {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 10001;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+    font-size: 28px !important;
+    line-height: 1 !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    transition: background-color 0.2s ease;
+}
+
+.rp-modal-zoom-close:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Scroll indicator */
+.rp-modal-zoom-indicator {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10001;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    animation: rp-modal-bounce 1.5s infinite;
+    pointer-events: none;
+    font-size: 14px;
+}
+
+.rp-modal-zoom-indicator.rp-indicator-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes rp-modal-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-8px); }
 }
 
 /* ==============================================
@@ -1257,6 +1394,15 @@
         transition: none;
     }
 
+    .rp-modal-zoom-overlay {
+        transition: none;
+    }
+
+    .rp-modal-zoom-indicator {
+        animation: none;
+        transition: none;
+    }
+
     .rp-accordion-panel {
         transition: none;
     }
@@ -1323,7 +1469,8 @@
     .rp-carousel-indicators,
     .rp-zoom-lens,
     .rp-zoom-result,
-    .rp-click-zoom-overlay {
+    .rp-click-zoom-overlay,
+    .rp-modal-zoom-overlay {
         display: none;
     }
 

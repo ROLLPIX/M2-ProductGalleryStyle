@@ -43,7 +43,7 @@
                        showInWebsite="1"
                        showInStore="1">
                     <label>Zoom Type</label>
-                    <comment>Select the zoom behavior when interacting with images</comment>
+                    <comment>Select the zoom behavior: Hover Magnifier, Lightbox (GLightbox), Click to Zoom, Modal Zoom (full-screen image stack), or Disabled</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ZoomType</source_model>
                 </field>
 
