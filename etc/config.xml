@@ -30,6 +30,7 @@
                 <slider_transition>fade</slider_transition>
                 <slider_arrows>1</slider_arrows>
                 <slider_dots>1</slider_dots>
+                <slider_mousewheel>1</slider_mousewheel>
             </layout>
             <!-- Mobile Settings -->
             <mobile>

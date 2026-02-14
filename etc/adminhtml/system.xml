@@ -229,10 +229,25 @@
                     </depends>
                 </field>
 
-                <field id="thumbnail_position"
+                <field id="slider_mousewheel"
                        translate="label comment"
                        type="select"
                        sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Mouse Wheel Navigation</label>
+                    <comment>Allow scrolling the mouse wheel over the image to switch slides</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
+                </field>
+
+                <field id="thumbnail_position"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="45"
                        showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">

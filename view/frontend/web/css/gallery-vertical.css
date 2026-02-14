@@ -85,6 +85,10 @@
    Slider Layout: Single image with navigation
    ============================================== */
 
+.rp-slider-wrapper {
+    position: relative;
+}
+
 .rp-layout-slider .rp-gallery-images {
     position: relative;
     overflow: hidden;
@@ -159,12 +163,15 @@
 .rp-slider-dot {
     width: 10px;
     height: 10px;
+    min-width: 10px;
+    min-height: 10px;
     border-radius: 50%;
     background: #ccc;
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .rp-slider-dot:hover {
@@ -173,7 +180,6 @@
 
 .rp-slider-dot.rp-dot-active {
     background: #333;
-    transform: scale(1.2);
 }
 
 /* Slider Transition Styles */
@@ -232,42 +238,41 @@
 }
 
 /* ==============================================
-   Thumbnail Navigation Strip
+   Thumbnail Navigation Strip (slider layout only)
    ============================================== */
 
 .rp-thumbnail-strip {
     display: none;
 }
 
-/* Left/Right: thumbnail strip alongside gallery images */
-.rp-thumbnails-left .rp-product-gallery,
-.rp-thumbnails-right .rp-product-gallery {
-    display: grid;
-    gap: 10px;
-}
-
+/* Left: thumbnail strip alongside slider */
 .rp-thumbnails-left .rp-product-gallery {
+    display: grid;
     grid-template-columns: 80px 1fr;
-}
-
-.rp-thumbnails-right .rp-product-gallery {
-    grid-template-columns: 1fr 80px;
+    gap: 10px;
 }
 
 .rp-thumbnails-left .rp-thumbnail-strip {
     order: 1;
 }
 
-.rp-thumbnails-left .rp-gallery-images {
+.rp-thumbnails-left .rp-slider-wrapper {
     order: 2;
+}
+
+/* Right: thumbnail strip alongside slider */
+.rp-thumbnails-right .rp-product-gallery {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    gap: 10px;
+}
+
+.rp-thumbnails-right .rp-slider-wrapper {
+    order: 1;
 }
 
 .rp-thumbnails-right .rp-thumbnail-strip {
     order: 2;
-}
-
-.rp-thumbnails-right .rp-gallery-images {
-    order: 1;
 }
 
 /* Vertical strip (left/right) */
@@ -279,10 +284,9 @@
     max-height: calc(100vh - var(--rp-sticky-offset, 20px) - 40px);
     overflow-y: auto;
     overflow-x: hidden;
-    position: sticky;
-    top: var(--rp-sticky-offset, 20px);
     scrollbar-width: none;
     -ms-overflow-style: none;
+    align-self: start;
 }
 
 .rp-thumbnails-left .rp-thumbnail-strip::-webkit-scrollbar,
@@ -632,8 +636,8 @@
 
     .rp-thumbnails-left .rp-product-gallery,
     .rp-thumbnails-right .rp-product-gallery {
-        display: block;
-        grid-template-columns: none;
+        display: block !important;
+        grid-template-columns: none !important;
     }
 
     .rp-gallery-item {

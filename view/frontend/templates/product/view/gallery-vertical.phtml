@@ -126,34 +126,39 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
      data-role="rp-gallery"
      data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryEffects": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryThumbnails": <?= /* @noEscape */ $jsConfig ?>, "rpGallerySlider": <?= /* @noEscape */ $jsConfig ?>}'>
 
-    <div class="rp-gallery-images">
-        <?php foreach ($images as $image): ?>
-            <?php
-            $largeImageUrl = $image->getData('large_image_url') ?: $image->getData('url');
-            $mediumImageUrl = $image->getData('medium_image_url') ?: $image->getData('url');
-            $imageLabel = $image->getData('label') ?: $productName;
-            ?>
-            <a href="<?= $block->escapeUrl($largeImageUrl) ?>"
-               class="rp-gallery-item <?= $zoomType === 'lightbox' ? 'glightbox' : '' ?>"
-               data-gallery="product-gallery"
-               <?php if ($zoomType === 'lightbox'): ?>
-               data-glightbox="title: <?= $block->escapeHtmlAttr($imageLabel) ?>"
-               <?php endif; ?>>
-                <img src="<?= $block->escapeUrl($mediumImageUrl) ?>"
-                     alt="<?= $block->escapeHtmlAttr($imageLabel) ?>"
-                     loading="lazy"/>
-            </a>
-        <?php endforeach; ?>
-    </div>
+    <?php if ($layoutType === 'slider'): ?>
+    <div class="rp-slider-wrapper">
+    <?php endif; ?>
+
+        <div class="rp-gallery-images">
+            <?php foreach ($images as $image): ?>
+                <?php
+                $largeImageUrl = $image->getData('large_image_url') ?: $image->getData('url');
+                $mediumImageUrl = $image->getData('medium_image_url') ?: $image->getData('url');
+                $imageLabel = $image->getData('label') ?: $productName;
+                ?>
+                <a href="<?= $block->escapeUrl($largeImageUrl) ?>"
+                   class="rp-gallery-item <?= $zoomType === 'lightbox' ? 'glightbox' : '' ?>"
+                   data-gallery="product-gallery"
+                   <?php if ($zoomType === 'lightbox'): ?>
+                   data-glightbox="title: <?= $block->escapeHtmlAttr($imageLabel) ?>"
+                   <?php endif; ?>>
+                    <img src="<?= $block->escapeUrl($mediumImageUrl) ?>"
+                         alt="<?= $block->escapeHtmlAttr($imageLabel) ?>"
+                         loading="lazy"/>
+                </a>
+            <?php endforeach; ?>
+        </div>
 
     <?php if ($layoutType === 'slider'): ?>
-    <button class="rp-slider-prev" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Previous image')) ?>">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <button class="rp-slider-next" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Next image')) ?>">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-    <div class="rp-slider-dots" data-role="rp-slider-dots"></div>
+        <button class="rp-slider-prev" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Previous image')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="rp-slider-next" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Next image')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="rp-slider-dots" data-role="rp-slider-dots"></div>
+    </div><!-- /.rp-slider-wrapper -->
     <?php endif; ?>
 
     <?php if ($thumbnailPosition !== 'disabled'): ?>

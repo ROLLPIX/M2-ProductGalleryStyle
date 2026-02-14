@@ -35,6 +35,7 @@ class Config
     private const XML_PATH_SLIDER_TRANSITION = 'rollpix_gallery/layout/slider_transition';
     private const XML_PATH_SLIDER_ARROWS = 'rollpix_gallery/layout/slider_arrows';
     private const XML_PATH_SLIDER_DOTS = 'rollpix_gallery/layout/slider_dots';
+    private const XML_PATH_SLIDER_MOUSEWHEEL = 'rollpix_gallery/layout/slider_mousewheel';
     private const XML_PATH_SHIMMER_ENABLED = 'rollpix_gallery/effects/shimmer_enabled';
     private const XML_PATH_FADEIN_ENABLED = 'rollpix_gallery/effects/fadein_enabled';
     private const XML_PATH_COUNTER_ENABLED = 'rollpix_gallery/effects/counter_enabled';
@@ -226,6 +227,15 @@ class Config
         );
     }
 
+    public function isSliderMousewheelEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_SLIDER_MOUSEWHEEL,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     public function isShimmerEnabled(?int $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
@@ -289,7 +299,8 @@ class Config
                 'direction' => $this->getSliderDirection($storeId),
                 'transition' => $this->getSliderTransition($storeId),
                 'arrows' => $this->isSliderArrowsEnabled($storeId),
-                'dots' => $this->isSliderDotsEnabled($storeId)
+                'dots' => $this->isSliderDotsEnabled($storeId),
+                'mousewheel' => $this->isSliderMousewheelEnabled($storeId)
             ],
             'effects' => [
                 'shimmerEnabled' => $this->isShimmerEnabled($storeId),

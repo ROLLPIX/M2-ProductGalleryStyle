@@ -31,6 +31,7 @@ define([
         var transition = sliderConfig.transition || 'fade';
         var showArrows = sliderConfig.arrows !== false;
         var showDots = sliderConfig.dots !== false;
+        var enableMouseWheel = sliderConfig.mousewheel !== false;
 
         var $imagesContainer = $gallery.find('.rp-gallery-images');
         var $items = $gallery.find('.rp-gallery-item');
@@ -98,15 +99,17 @@ define([
                     }
                 });
 
-                // Mouse wheel navigation on main image
-                $imagesContainer.on('wheel.rpslider', throttle(function (e) {
-                    e.preventDefault();
-                    if (e.originalEvent.deltaY > 0) {
-                        goToSlide(currentIndex + 1);
-                    } else if (e.originalEvent.deltaY < 0) {
-                        goToSlide(currentIndex - 1);
-                    }
-                }, 400));
+                // Mouse wheel navigation on main image (configurable)
+                if (enableMouseWheel) {
+                    $imagesContainer.on('wheel.rpslider', throttle(function (e) {
+                        e.preventDefault();
+                        if (e.originalEvent.deltaY > 0) {
+                            goToSlide(currentIndex + 1);
+                        } else if (e.originalEvent.deltaY < 0) {
+                            goToSlide(currentIndex - 1);
+                        }
+                    }, 400));
+                }
 
                 // Thumbnail clicks
                 $thumbnails.on('click.rpslider', function () {
@@ -174,6 +177,10 @@ define([
         // FADE TRANSITION
         // =========================================
         function animateFade($current, $next) {
+            // Lock container height to prevent collapse during transition
+            var containerHeight = $imagesContainer.height();
+            $imagesContainer.css('min-height', containerHeight + 'px');
+
             $next.css({
                 'display': 'block',
                 'opacity': '0',
@@ -183,12 +190,13 @@ define([
                 'width': '100%'
             });
 
-            $current.animate({ opacity: 0 }, 300, function () {
-                $current.css({ 'display': 'none', 'position': '' });
-            });
+            $current.animate({ opacity: 0 }, 300);
 
             $next.animate({ opacity: 1 }, 300, function () {
-                $next.css({ 'position': '', 'top': '', 'left': '' });
+                // Next is fully visible - safely swap positions
+                $current.css({ 'display': 'none', 'position': '', 'opacity': '' });
+                $next.css({ 'position': '', 'top': '', 'left': '', 'width': '' });
+                $imagesContainer.css('min-height', '');
                 isAnimating = false;
             });
         }
@@ -197,6 +205,10 @@ define([
         // SLIDE TRANSITION
         // =========================================
         function animateSlide($current, $next, goingForward) {
+            // Lock container height
+            var containerHeight = $imagesContainer.height();
+            $imagesContainer.css('min-height', containerHeight + 'px');
+
             var enterClass, exitTransform;
 
             if (direction === 'vertical') {
@@ -219,10 +231,11 @@ define([
             $current.addClass('rp-slide-exit').css('transform', exitTransform);
 
             setTimeout(function () {
-                $current.css({ 'display': 'none', 'transform': '' })
+                $current.css({ 'display': 'none', 'transform': '', 'opacity': '' })
                         .removeClass('rp-slide-exit');
                 $next.css({ 'position': '' })
                      .removeClass('rp-slide-enter rp-slide-active');
+                $imagesContainer.css('min-height', '');
                 isAnimating = false;
             }, 350);
         }
@@ -231,6 +244,10 @@ define([
         // ZOOM-FADE TRANSITION
         // =========================================
         function animateZoomFade($current, $next) {
+            // Lock container height
+            var containerHeight = $imagesContainer.height();
+            $imagesContainer.css('min-height', containerHeight + 'px');
+
             $next.css('display', 'block')
                  .addClass('rp-zoom-enter');
 
@@ -245,6 +262,7 @@ define([
                         .removeClass('rp-zoom-exit');
                 $next.css({ 'position': '', 'opacity': '' })
                      .removeClass('rp-zoom-enter rp-zoom-enter-active');
+                $imagesContainer.css('min-height', '');
                 isAnimating = false;
             }, 400);
         }
@@ -290,6 +308,7 @@ define([
             if (window.innerWidth <= 767) {
                 $items.css({ 'display': '', 'opacity': '', 'transform': '', 'position': '' });
                 $items.removeClass('rp-slide-enter rp-slide-active rp-slide-exit rp-zoom-enter rp-zoom-enter-active rp-zoom-exit');
+                $imagesContainer.css('min-height', '');
             }
         }, 250));
 
