@@ -34,7 +34,7 @@ define([
         var enableMouseWheel = sliderConfig.mousewheel !== false;
 
         var $imagesContainer = $gallery.find('.rp-gallery-images');
-        var $items = $gallery.find('.rp-gallery-item');
+        var $items = $imagesContainer.find('.rp-gallery-item');
         var $prevBtn = $gallery.find('.rp-slider-prev');
         var $nextBtn = $gallery.find('.rp-slider-next');
         var $dotsContainer = $gallery.find('.rp-slider-dots');
@@ -43,6 +43,10 @@ define([
         var totalImages = $items.length;
         var isAnimating = false;
 
+        var allTransitionClasses = 'rp-slide-enter rp-slide-active rp-slide-exit ' +
+            'rp-slide-enter-left rp-slide-enter-right rp-slide-enter-up rp-slide-enter-down ' +
+            'rp-zoom-enter rp-zoom-enter-active rp-zoom-exit';
+
         if (totalImages <= 0) {
             return;
         }
@@ -50,12 +54,19 @@ define([
         init();
 
         function init() {
-            // Hide all items except the first
+            // Force-load all images: display:none prevents lazy loading
+            $items.find('img[loading="lazy"]').removeAttr('loading');
+
+            // Set initial state: only first image visible
             $items.each(function (index) {
-                $(this).css({
-                    'display': index === 0 ? 'block' : 'none',
-                    'opacity': index === 0 ? '1' : '0'
-                });
+                var $item = $(this);
+                $item.removeClass(allTransitionClasses);
+                $item.attr('style', '');
+                if (index === 0) {
+                    $item.css({ 'display': 'block', 'opacity': '1' });
+                } else {
+                    $item.css('display', 'none');
+                }
             });
 
             // Handle arrows visibility
@@ -63,10 +74,14 @@ define([
                 $prevBtn.hide();
                 $nextBtn.hide();
             } else {
-                $prevBtn.on('click.rpslider', function () {
+                $prevBtn.on('click.rpslider', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     goToSlide(currentIndex - 1);
                 });
-                $nextBtn.on('click.rpslider', function () {
+                $nextBtn.on('click.rpslider', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     goToSlide(currentIndex + 1);
                 });
             }
@@ -112,9 +127,13 @@ define([
                 }
 
                 // Thumbnail clicks
-                $thumbnails.on('click.rpslider', function () {
+                $thumbnails.on('click.rpslider', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     var index = $(this).data('thumb-index');
-                    goToSlide(index);
+                    if (typeof index === 'number') {
+                        goToSlide(index);
+                    }
                 });
             }
 
@@ -124,15 +143,19 @@ define([
         function buildDots() {
             for (var i = 0; i < totalImages; i++) {
                 var $dot = $('<button class="rp-slider-dot" type="button"></button>');
-                $dot.attr('aria-label', 'Go to image ' + (i + 1));
-                $dot.data('dot-index', i);
+                $dot.attr({
+                    'aria-label': 'Go to image ' + (i + 1),
+                    'data-dot-index': i
+                });
 
                 if (i === 0) {
                     $dot.addClass('rp-dot-active');
                 }
 
-                $dot.on('click.rpslider', function () {
-                    goToSlide($(this).data('dot-index'));
+                $dot.on('click.rpslider', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToSlide(parseInt($(this).attr('data-dot-index'), 10));
                 });
 
                 $dotsContainer.append($dot);
@@ -173,15 +196,31 @@ define([
             }
         }
 
+        /**
+         * Reset ALL items to a clean state.
+         * Called after every transition to prevent stale inline styles.
+         */
+        function resetAllItems() {
+            $items.each(function (i) {
+                var $item = $(this);
+                $item.removeClass(allTransitionClasses);
+                $item.attr('style', '');
+                if (i === currentIndex) {
+                    $item.css({ 'display': 'block', 'opacity': '1' });
+                } else {
+                    $item.css('display', 'none');
+                }
+            });
+            $imagesContainer.css('min-height', '');
+        }
+
         // =========================================
-        // FADE TRANSITION (CSS transitions, no jQuery.animate)
+        // FADE TRANSITION
         // =========================================
         function animateFade($current, $next) {
-            // Lock container height to prevent collapse during transition
             var containerHeight = $imagesContainer.height();
             $imagesContainer.css('min-height', containerHeight + 'px');
 
-            // Position next image on top, invisible
             $next.css({
                 'display': 'block',
                 'opacity': '0',
@@ -194,18 +233,14 @@ define([
 
             $current.css('transition', 'opacity 0.3s ease');
 
-            // Force reflow before triggering transition
+            // Force reflow
             $next[0].offsetHeight;
 
-            // Trigger CSS transitions
             $current.css('opacity', '0');
             $next.css('opacity', '1');
 
-            // Cleanup after transition completes
             setTimeout(function () {
-                $current.css({ 'display': 'none', 'position': '', 'opacity': '', 'transition': '' });
-                $next.css({ 'position': '', 'top': '', 'left': '', 'width': '', 'transition': '' });
-                $imagesContainer.css('min-height', '');
+                resetAllItems();
                 isAnimating = false;
             }, 350);
         }
@@ -214,7 +249,6 @@ define([
         // SLIDE TRANSITION
         // =========================================
         function animateSlide($current, $next, goingForward) {
-            // Lock container height
             var containerHeight = $imagesContainer.height();
             $imagesContainer.css('min-height', containerHeight + 'px');
 
@@ -228,23 +262,17 @@ define([
                 exitTransform = goingForward ? 'translateX(-100%)' : 'translateX(100%)';
             }
 
-            // Prepare next item
             $next.css('display', 'block')
                  .addClass('rp-slide-enter ' + enterClass);
 
             // Force reflow
             $next[0].offsetHeight;
 
-            // Animate both
             $next.addClass('rp-slide-active').removeClass(enterClass);
             $current.addClass('rp-slide-exit').css('transform', exitTransform);
 
             setTimeout(function () {
-                $current.css({ 'display': 'none', 'transform': '', 'opacity': '' })
-                        .removeClass('rp-slide-exit');
-                $next.css({ 'position': '' })
-                     .removeClass('rp-slide-enter rp-slide-active');
-                $imagesContainer.css('min-height', '');
+                resetAllItems();
                 isAnimating = false;
             }, 350);
         }
@@ -253,7 +281,6 @@ define([
         // ZOOM-FADE TRANSITION
         // =========================================
         function animateZoomFade($current, $next) {
-            // Lock container height
             var containerHeight = $imagesContainer.height();
             $imagesContainer.css('min-height', containerHeight + 'px');
 
@@ -267,11 +294,7 @@ define([
             $next.addClass('rp-zoom-enter-active');
 
             setTimeout(function () {
-                $current.css({ 'display': 'none', 'transform': '', 'opacity': '' })
-                        .removeClass('rp-zoom-exit');
-                $next.css({ 'position': '', 'opacity': '' })
-                     .removeClass('rp-zoom-enter rp-zoom-enter-active');
-                $imagesContainer.css('min-height', '');
+                resetAllItems();
                 isAnimating = false;
             }, 400);
         }
@@ -315,8 +338,8 @@ define([
         // Handle resize: if resizing to mobile, reset all items
         $(window).on('resize.rpslider', debounce(function () {
             if (window.innerWidth <= 767) {
-                $items.css({ 'display': '', 'opacity': '', 'transform': '', 'position': '' });
-                $items.removeClass('rp-slide-enter rp-slide-active rp-slide-exit rp-zoom-enter rp-zoom-enter-active rp-zoom-exit');
+                $items.attr('style', '');
+                $items.removeClass(allTransitionClasses);
                 $imagesContainer.css('min-height', '');
             }
         }, 250));

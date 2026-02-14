@@ -108,8 +108,12 @@ define([
 
             var hideTimeout;
 
-            // Show initial state
+            // Show initial state briefly so user knows counter exists
             $counter.text('1 / ' + totalImages);
+            $counter.addClass('rp-counter-visible');
+            hideTimeout = setTimeout(function () {
+                $counter.removeClass('rp-counter-visible');
+            }, 3000);
 
             // Listen for slider change events
             $gallery.on('rpslider:change', function (e, currentIndex, total) {
