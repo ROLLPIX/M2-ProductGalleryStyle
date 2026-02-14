@@ -1,9 +1,9 @@
 {
     "name": "rollpix/module-product-gallery",
-    "description": "Modern editorial-style product gallery for Magento 2 with vertical and grid layouts, hover zoom, lightbox, sticky panel, and mobile carousel",
+    "description": "Modern editorial-style product gallery for Magento 2 with vertical, grid and masonry layouts, hover zoom, lightbox, sticky panel, thumbnail navigation, shimmer loading, fade-in animations, image counter, and mobile carousel",
     "type": "magento2-module",
     "license": "MIT",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "keywords": [
         "magento2",
         "magento",
@@ -14,8 +14,12 @@
         "editorial",
         "vertical",
         "grid",
+        "masonry",
         "sticky",
-        "carousel"
+        "carousel",
+        "thumbnails",
+        "shimmer",
+        "fadein"
     ],
     "authors": [
         {

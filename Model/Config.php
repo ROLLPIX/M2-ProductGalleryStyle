@@ -30,6 +30,10 @@ class Config
     private const XML_PATH_STICKY_OFFSET = 'rollpix_gallery/sticky/offset';
     private const XML_PATH_TABS_INLINE_ENABLED = 'rollpix_gallery/tabs/inline_enabled';
     private const XML_PATH_TABS_DESC_MAX_HEIGHT = 'rollpix_gallery/tabs/description_max_height';
+    private const XML_PATH_THUMBNAIL_POSITION = 'rollpix_gallery/layout/thumbnail_position';
+    private const XML_PATH_SHIMMER_ENABLED = 'rollpix_gallery/effects/shimmer_enabled';
+    private const XML_PATH_FADEIN_ENABLED = 'rollpix_gallery/effects/fadein_enabled';
+    private const XML_PATH_COUNTER_ENABLED = 'rollpix_gallery/effects/counter_enabled';
 
     private ScopeConfigInterface $scopeConfig;
 
@@ -173,6 +177,42 @@ class Config
         );
     }
 
+    public function getThumbnailPosition(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_THUMBNAIL_POSITION,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 'disabled';
+    }
+
+    public function isShimmerEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_SHIMMER_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function isFadeInEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_FADEIN_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function isCounterEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_COUNTER_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     /**
      * Get all configuration as array for JS
      */
@@ -190,7 +230,8 @@ class Config
                 'columnRatio' => $this->getColumnRatio($storeId),
                 'gridRatio' => $this->getGridRatio($storeId),
                 'gridImageColumns' => $this->getGridImageColumns($storeId),
-                'imageGap' => $this->getImageGap($storeId)
+                'imageGap' => $this->getImageGap($storeId),
+                'thumbnailPosition' => $this->getThumbnailPosition($storeId)
             ],
             'mobile' => [
                 'behavior' => $this->getMobileBehavior($storeId)
@@ -203,6 +244,11 @@ class Config
             'tabs' => [
                 'inlineEnabled' => $this->isInlineTabsEnabled($storeId),
                 'descriptionMaxHeight' => $this->getDescriptionMaxHeight($storeId)
+            ],
+            'effects' => [
+                'shimmerEnabled' => $this->isShimmerEnabled($storeId),
+                'fadeInEnabled' => $this->isFadeInEnabled($storeId),
+                'counterEnabled' => $this->isCounterEnabled($storeId)
             ]
         ];
     }

@@ -61,6 +61,23 @@ if ($galleryConfig->isInlineTabsEnabled()) {
     $wrapperClasses[] = 'rp-inline-tabs';
 }
 
+$thumbnailPosition = $galleryConfig->getThumbnailPosition();
+if ($thumbnailPosition !== 'disabled') {
+    $wrapperClasses[] = 'rp-thumbnails-' . $thumbnailPosition;
+}
+
+if ($galleryConfig->isShimmerEnabled()) {
+    $wrapperClasses[] = 'rp-shimmer';
+}
+
+if ($galleryConfig->isFadeInEnabled()) {
+    $wrapperClasses[] = 'rp-fadein';
+}
+
+if ($galleryConfig->isCounterEnabled()) {
+    $wrapperClasses[] = 'rp-counter';
+}
+
 // Get JS config
 $jsConfig = $galleryConfig->getJsConfigJson();
 
@@ -77,7 +94,7 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
         --rp-info-order: <?= (int)$columnCss['infoOrder'] ?>;
         --rp-sticky-offset: <?= (int)$stickyOffset ?>px;
         --rp-image-gap: <?= (int)$imageGap ?>px;
-        <?php if ($layoutType === 'grid'): ?>
+        <?php if ($layoutType === 'grid' || $layoutType === 'masonry'): ?>
         --rp-grid-cols: <?= (int)$gridImageColumns ?>;
         <?php endif; ?>
     }
@@ -107,7 +124,7 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
 
 <div class="<?= $block->escapeHtmlAttr(implode(' ', $wrapperClasses)) ?>"
      data-role="rp-gallery"
-     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>}'>
+     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryEffects": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryThumbnails": <?= /* @noEscape */ $jsConfig ?>}'>
 
     <div class="rp-gallery-images">
         <?php foreach ($images as $image): ?>
@@ -128,4 +145,23 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
             </a>
         <?php endforeach; ?>
     </div>
+
+    <?php if ($thumbnailPosition !== 'disabled'): ?>
+    <div class="rp-thumbnail-strip" data-role="rp-thumbnails">
+        <?php foreach ($images as $index => $image): ?>
+            <?php
+            $thumbUrl = $image->getData('small_image_url') ?: $image->getData('url');
+            $thumbLabel = $image->getData('label') ?: $productName;
+            ?>
+            <button class="rp-thumbnail-item<?= $index === 0 ? ' rp-thumbnail-active' : '' ?>"
+                    type="button"
+                    data-thumb-index="<?= (int)$index ?>"
+                    aria-label="<?= $block->escapeHtmlAttr(__('Go to image %1', $index + 1)) ?>">
+                <img src="<?= $block->escapeUrl($thumbUrl) ?>"
+                     alt="<?= $block->escapeHtmlAttr($thumbLabel) ?>"
+                     loading="lazy"/>
+            </button>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
 </div>

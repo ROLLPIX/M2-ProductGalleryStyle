@@ -138,7 +138,7 @@
                     <comment>Width ratio between image grid and product info sidebar (grid layout)</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\GridRatio</source_model>
                     <depends>
-                        <field id="type" separator=",">grid,fashion</field>
+                        <field id="type" separator=",">grid,fashion,masonry</field>
                     </depends>
                 </field>
 
@@ -153,7 +153,7 @@
                     <comment>Number of image columns within the grid area</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\GridImageColumns</source_model>
                     <depends>
-                        <field id="type">grid</field>
+                        <field id="type" separator=",">grid,masonry</field>
                     </depends>
                 </field>
 
@@ -167,6 +167,65 @@
                     <label>Gap Between Images</label>
                     <comment>Space between images in the gallery (in pixels)</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ImageGap</source_model>
+                </field>
+
+                <field id="thumbnail_position"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="35"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Thumbnail Navigation</label>
+                    <comment>Show a strip of small thumbnail images for quick navigation. Desktop only.</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ThumbnailPosition</source_model>
+                </field>
+            </group>
+
+            <!-- Effects & Animations Group -->
+            <group id="effects"
+                   translate="label"
+                   type="text"
+                   sortOrder="35"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Effects &amp; Animations</label>
+
+                <field id="shimmer_enabled"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Shimmer Loading Effect</label>
+                    <comment>Show animated shimmer placeholder while images are loading</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="fadein_enabled"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Fade-in on Scroll</label>
+                    <comment>Subtle opacity and slide-up animation when images enter the viewport</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="counter_enabled"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Image Counter</label>
+                    <comment>Show "3 / 8" position indicator while scrolling through images (desktop only)</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
 

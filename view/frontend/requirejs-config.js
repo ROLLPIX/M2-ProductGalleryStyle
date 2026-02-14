@@ -10,7 +10,9 @@ var config = {
             'rpGalleryZoom': 'Rollpix_ProductGallery/js/gallery-zoom',
             'rpGalleryCarousel': 'Rollpix_ProductGallery/js/gallery-carousel',
             'rpStickyScroll': 'Rollpix_ProductGallery/js/gallery-sticky',
-            'rpGalleryTabs': 'Rollpix_ProductGallery/js/gallery-tabs'
+            'rpGalleryTabs': 'Rollpix_ProductGallery/js/gallery-tabs',
+            'rpGalleryEffects': 'Rollpix_ProductGallery/js/gallery-effects',
+            'rpGalleryThumbnails': 'Rollpix_ProductGallery/js/gallery-thumbnails'
         }
     }
 };

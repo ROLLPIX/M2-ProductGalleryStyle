@@ -25,6 +25,7 @@
                 <grid_ratio>70_30</grid_ratio>
                 <grid_image_columns>2</grid_image_columns>
                 <image_gap>20</image_gap>
+                <thumbnail_position>disabled</thumbnail_position>
             </layout>
             <!-- Mobile Settings -->
             <mobile>
@@ -36,6 +37,12 @@
                 <mode>scroll</mode>
                 <offset>20</offset>
             </sticky>
+            <!-- Effects Settings -->
+            <effects>
+                <shimmer_enabled>0</shimmer_enabled>
+                <fadein_enabled>0</fadein_enabled>
+                <counter_enabled>0</counter_enabled>
+            </effects>
             <!-- Tabs Settings -->
             <tabs>
                 <inline_enabled>0</inline_enabled>

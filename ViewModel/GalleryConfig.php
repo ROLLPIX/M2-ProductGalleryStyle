@@ -97,6 +97,26 @@ class GalleryConfig implements ArgumentInterface
         return $this->config->isInlineTabsEnabled();
     }
 
+    public function getThumbnailPosition(): string
+    {
+        return $this->config->getThumbnailPosition();
+    }
+
+    public function isShimmerEnabled(): bool
+    {
+        return $this->config->isShimmerEnabled();
+    }
+
+    public function isFadeInEnabled(): bool
+    {
+        return $this->config->isFadeInEnabled();
+    }
+
+    public function isCounterEnabled(): bool
+    {
+        return $this->config->isCounterEnabled();
+    }
+
     /**
      * Get JS configuration as JSON
      */
@@ -113,7 +133,7 @@ class GalleryConfig implements ArgumentInterface
         $layoutType = $this->getLayoutType();
         $position = $this->getGalleryPosition();
 
-        if ($layoutType === 'grid' || $layoutType === 'fashion') {
+        if ($layoutType === 'grid' || $layoutType === 'fashion' || $layoutType === 'masonry') {
             $gridRatio = $this->getGridRatio();
             $parts = explode('_', $gridRatio);
             $col1 = (int) ($parts[0] ?? 70);
@@ -131,7 +151,7 @@ class GalleryConfig implements ArgumentInterface
                 'infoOrder' => $position === 'left' ? 2 : 1
             ];
 
-            if ($layoutType === 'grid') {
+            if ($layoutType === 'grid' || $layoutType === 'masonry') {
                 $result['gridImageColumns'] = $this->getGridImageColumns();
             }
 

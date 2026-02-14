@@ -81,6 +81,143 @@
     grid-column: span 2;
 }
 
+/* ==============================================
+   Masonry Layout: CSS columns for Pinterest-style
+   ============================================== */
+
+.rp-layout-masonry .rp-gallery-images {
+    display: block;
+    column-count: var(--rp-grid-cols, 2);
+    column-gap: var(--rp-image-gap);
+}
+
+.rp-layout-masonry .rp-gallery-item {
+    break-inside: avoid;
+    margin-bottom: var(--rp-image-gap);
+    display: inline-block;
+    width: 100%;
+}
+
+/* ==============================================
+   Thumbnail Navigation Strip
+   ============================================== */
+
+.rp-thumbnail-strip {
+    display: none;
+}
+
+/* Left/Right: thumbnail strip alongside gallery images */
+.rp-thumbnails-left .rp-product-gallery,
+.rp-thumbnails-right .rp-product-gallery {
+    display: grid;
+    gap: 10px;
+}
+
+.rp-thumbnails-left .rp-product-gallery {
+    grid-template-columns: 80px 1fr;
+}
+
+.rp-thumbnails-right .rp-product-gallery {
+    grid-template-columns: 1fr 80px;
+}
+
+.rp-thumbnails-left .rp-thumbnail-strip {
+    order: 1;
+}
+
+.rp-thumbnails-left .rp-gallery-images {
+    order: 2;
+}
+
+.rp-thumbnails-right .rp-thumbnail-strip {
+    order: 2;
+}
+
+.rp-thumbnails-right .rp-gallery-images {
+    order: 1;
+}
+
+/* Vertical strip (left/right) */
+.rp-thumbnails-left .rp-thumbnail-strip,
+.rp-thumbnails-right .rp-thumbnail-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: calc(100vh - var(--rp-sticky-offset, 20px) - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: sticky;
+    top: var(--rp-sticky-offset, 20px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rp-thumbnails-left .rp-thumbnail-strip::-webkit-scrollbar,
+.rp-thumbnails-right .rp-thumbnail-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* Horizontal strip (bottom) */
+.rp-thumbnails-bottom .rp-thumbnail-strip {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rp-thumbnails-bottom .rp-thumbnail-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* Thumbnail item */
+.rp-thumbnail-item,
+.rp-thumbnail-item:hover,
+.rp-thumbnail-item:focus,
+.rp-thumbnail-item:active {
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0.6;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.rp-thumbnail-item:hover {
+    opacity: 0.85;
+    outline: none !important;
+}
+
+.rp-thumbnail-item:focus {
+    outline: none !important;
+}
+
+.rp-thumbnail-item.rp-thumbnail-active {
+    opacity: 1;
+    border-color: #333;
+}
+
+.rp-thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .rp-gallery-images {
     gap: var(--rp-image-gap);
 }
@@ -337,7 +474,7 @@
         gap: 10px;
     }
 
-    /* Grid and fashion layouts collapse to single column on mobile */
+    /* Grid, fashion, masonry layouts collapse to single column on mobile */
     .rp-layout-grid .rp-gallery-images,
     .rp-layout-fashion .rp-gallery-images {
         grid-template-columns: 1fr;
@@ -346,6 +483,21 @@
     .rp-layout-fashion .rp-gallery-item:nth-child(3n+1),
     .rp-layout-fashion .rp-gallery-item:last-child:nth-child(3n+2) {
         grid-column: span 1;
+    }
+
+    .rp-layout-masonry .rp-gallery-images {
+        column-count: 1;
+    }
+
+    /* Hide thumbnails on mobile */
+    .rp-thumbnail-strip {
+        display: none !important;
+    }
+
+    .rp-thumbnails-left .rp-product-gallery,
+    .rp-thumbnails-right .rp-product-gallery {
+        display: block;
+        grid-template-columns: none;
     }
 
     .rp-gallery-item {
@@ -678,6 +830,108 @@
 }
 
 /* ==============================================
+   Shimmer Loading Effect
+   ============================================== */
+
+@keyframes rp-shimmer-slide {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.rp-shimmer .rp-gallery-item {
+    position: relative;
+    background: #f0f0f0;
+    overflow: hidden;
+    min-height: 200px;
+}
+
+.rp-shimmer .rp-gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%
+    );
+    animation: rp-shimmer-slide 1.5s infinite;
+    z-index: 1;
+}
+
+.rp-shimmer .rp-gallery-item.rp-loaded::before {
+    display: none;
+}
+
+.rp-shimmer .rp-gallery-item.rp-loaded {
+    background: transparent;
+    min-height: auto;
+}
+
+.rp-shimmer .rp-gallery-item img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.rp-shimmer .rp-gallery-item.rp-loaded img {
+    opacity: 1;
+}
+
+/* ==============================================
+   Fade-in on Scroll
+   ============================================== */
+
+.rp-fadein .rp-gallery-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.rp-fadein .rp-gallery-item.rp-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==============================================
+   Image Counter
+   ============================================== */
+
+.rp-counter-display {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.rp-counter-display.rp-counter-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media screen and (max-width: 767px) {
+    .rp-counter-display {
+        display: none !important;
+    }
+}
+
+/* ==============================================
    Accessibility
    ============================================== */
 
@@ -710,6 +964,32 @@
     .rp-accordion-icon {
         transition: none;
     }
+
+    /* Shimmer: disable animation */
+    .rp-shimmer .rp-gallery-item::before {
+        animation: none;
+    }
+
+    .rp-shimmer .rp-gallery-item img {
+        transition: none;
+    }
+
+    /* Fade-in: show immediately without animation */
+    .rp-fadein .rp-gallery-item {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    /* Counter: disable transition */
+    .rp-counter-display {
+        transition: none;
+    }
+
+    /* Thumbnails: disable scroll behavior */
+    .rp-thumbnail-strip {
+        scroll-behavior: auto;
+    }
 }
 
 /* ==============================================
@@ -739,5 +1019,27 @@
     .rp-accordion-panel {
         max-height: none !important;
         overflow: visible !important;
+    }
+
+    /* Hide non-printable elements */
+    .rp-counter-display,
+    .rp-thumbnail-strip {
+        display: none !important;
+    }
+
+    /* Show all images without effects */
+    .rp-shimmer .rp-gallery-item {
+        background: transparent;
+        min-height: auto;
+    }
+
+    .rp-shimmer .rp-gallery-item::before {
+        display: none;
+    }
+
+    .rp-shimmer .rp-gallery-item img,
+    .rp-fadein .rp-gallery-item {
+        opacity: 1;
+        transform: none;
     }
 }
