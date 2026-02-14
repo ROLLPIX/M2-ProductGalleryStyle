@@ -64,6 +64,9 @@ if ($galleryConfig->isInlineTabsEnabled()) {
 $thumbnailPosition = $galleryConfig->getThumbnailPosition();
 if ($thumbnailPosition !== 'disabled') {
     $wrapperClasses[] = 'rp-thumbnails-' . $thumbnailPosition;
+    if ($galleryConfig->getThumbnailStyle() === 'overlay') {
+        $wrapperClasses[] = 'rp-thumbnails-overlay';
+    }
 }
 
 if ($galleryConfig->isShimmerEnabled()) {

@@ -412,6 +412,113 @@
     display: block;
 }
 
+/* ==============================================
+   Thumbnail Overlay Mode (inside image)
+   ============================================== */
+
+/* Override grid layout: overlay doesn't need side-by-side */
+.rp-thumbnails-overlay.rp-thumbnails-left.rp-product-gallery,
+.rp-thumbnails-overlay.rp-thumbnails-right.rp-product-gallery,
+.rp-thumbnails-overlay.rp-thumbnails-bottom.rp-product-gallery {
+    display: block;
+    position: relative;
+}
+
+/* Shared overlay thumbnail strip */
+.rp-thumbnails-overlay .rp-thumbnail-strip {
+    position: absolute;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 8px;
+    padding: 6px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Smaller thumbnails in overlay */
+.rp-thumbnails-overlay .rp-thumbnail-item,
+.rp-thumbnails-overlay .rp-thumbnail-item:hover,
+.rp-thumbnails-overlay .rp-thumbnail-item:focus,
+.rp-thumbnails-overlay .rp-thumbnail-item:active {
+    width: 55px !important;
+    height: 55px !important;
+    min-width: 55px !important;
+    min-height: 55px !important;
+    max-width: 55px !important;
+    max-height: 55px !important;
+}
+
+/* Left overlay: vertical strip on left edge */
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-thumbnail-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rp-thumbnails-overlay.rp-thumbnails-left .rp-thumbnail-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* Right overlay: vertical strip on right edge */
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-thumbnail-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rp-thumbnails-overlay.rp-thumbnails-right .rp-thumbnail-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* Bottom overlay: horizontal strip near bottom */
+.rp-thumbnails-overlay.rp-thumbnails-bottom .rp-thumbnail-strip {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rp-thumbnails-overlay.rp-thumbnails-bottom .rp-thumbnail-strip::-webkit-scrollbar {
+    display: none;
+}
+
+/* Dots overlay: float inside the image */
+.rp-thumbnails-overlay .rp-slider-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
 .rp-gallery-images {
     gap: var(--rp-image-gap);
 }

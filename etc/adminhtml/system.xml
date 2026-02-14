@@ -258,6 +258,22 @@
                         <field id="type">slider</field>
                     </depends>
                 </field>
+
+                <field id="thumbnail_style"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="46"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Thumbnail Display Style</label>
+                    <comment>Outside: thumbnails appear beside the image. Overlay: thumbnails and dots float inside the image.</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\ThumbnailStyle</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                        <field id="thumbnail_position" separator=",">left,right,bottom</field>
+                    </depends>
+                </field>
             </group>
 
             <!-- Effects & Animations Group -->
