@@ -126,14 +126,11 @@ define([
                     }, 400));
                 }
 
-                // Thumbnail clicks
+                // Thumbnail clicks - use DOM index like dots
                 $thumbnails.on('click.rpslider', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    var index = $(this).data('thumb-index');
-                    if (typeof index === 'number') {
-                        goToSlide(index);
-                    }
+                    goToSlide($(this).index());
                 });
             }
 
