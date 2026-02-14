@@ -20,7 +20,7 @@
     <body>
         <!-- Remove original Fotorama gallery -->
         <referenceBlock name="product.info.media.image" remove="true"/>
-        <referenceContainer name="product.media" remove="true"/>
+        <referenceContainer name="product.info.media" remove="true"/>
 
         <!-- Create wrapper container for gallery + product info -->
         <referenceContainer name="content">
