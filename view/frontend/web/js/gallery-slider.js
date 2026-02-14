@@ -143,23 +143,21 @@ define([
         function buildDots() {
             for (var i = 0; i < totalImages; i++) {
                 var $dot = $('<button class="rp-slider-dot" type="button"></button>');
-                $dot.attr({
-                    'aria-label': 'Go to image ' + (i + 1),
-                    'data-dot-index': i
-                });
+                $dot.attr('aria-label', 'Go to image ' + (i + 1));
 
                 if (i === 0) {
                     $dot.addClass('rp-dot-active');
                 }
 
-                $dot.on('click.rpslider', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    goToSlide(parseInt($(this).attr('data-dot-index'), 10));
-                });
-
                 $dotsContainer.append($dot);
             }
+
+            // Single delegated click handler - use DOM index
+            $dotsContainer.on('click.rpslider', '.rp-slider-dot', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                goToSlide($(this).index());
+            });
         }
 
         function goToSlide(index) {
