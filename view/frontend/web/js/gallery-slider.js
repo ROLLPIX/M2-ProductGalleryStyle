@@ -174,31 +174,40 @@ define([
         }
 
         // =========================================
-        // FADE TRANSITION
+        // FADE TRANSITION (CSS transitions, no jQuery.animate)
         // =========================================
         function animateFade($current, $next) {
             // Lock container height to prevent collapse during transition
             var containerHeight = $imagesContainer.height();
             $imagesContainer.css('min-height', containerHeight + 'px');
 
+            // Position next image on top, invisible
             $next.css({
                 'display': 'block',
                 'opacity': '0',
                 'position': 'absolute',
                 'top': '0',
                 'left': '0',
-                'width': '100%'
+                'width': '100%',
+                'transition': 'opacity 0.3s ease'
             });
 
-            $current.animate({ opacity: 0 }, 300);
+            $current.css('transition', 'opacity 0.3s ease');
 
-            $next.animate({ opacity: 1 }, 300, function () {
-                // Next is fully visible - safely swap positions
-                $current.css({ 'display': 'none', 'position': '', 'opacity': '' });
-                $next.css({ 'position': '', 'top': '', 'left': '', 'width': '' });
+            // Force reflow before triggering transition
+            $next[0].offsetHeight;
+
+            // Trigger CSS transitions
+            $current.css('opacity', '0');
+            $next.css('opacity', '1');
+
+            // Cleanup after transition completes
+            setTimeout(function () {
+                $current.css({ 'display': 'none', 'position': '', 'opacity': '', 'transition': '' });
+                $next.css({ 'position': '', 'top': '', 'left': '', 'width': '', 'transition': '' });
                 $imagesContainer.css('min-height', '');
                 isAnimating = false;
-            });
+            }, 350);
         }
 
         // =========================================

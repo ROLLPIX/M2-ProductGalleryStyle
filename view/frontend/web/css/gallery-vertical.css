@@ -103,40 +103,67 @@
     height: auto;
 }
 
-/* Slider Navigation Arrows */
+/* Slider Navigation Arrows - comprehensive reset for Luma/Hyva */
 .rp-slider-prev,
-.rp-slider-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+.rp-slider-next,
+.rp-slider-prev:hover,
+.rp-slider-next:hover,
+.rp-slider-prev:focus,
+.rp-slider-next:focus,
+.rp-slider-prev:active,
+.rp-slider-next:active {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
     z-index: 10;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.85);
-    border: none;
-    border-radius: 50%;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 50% !important;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     transition: opacity 0.2s ease, background-color 0.2s ease;
-    color: #333;
-    padding: 0;
+    color: #333 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    line-height: 1 !important;
+    font-size: 0 !important;
+    box-sizing: border-box !important;
 }
 
-.rp-slider-prev {
-    left: 12px;
+.rp-slider-prev,
+.rp-slider-prev:hover,
+.rp-slider-prev:focus,
+.rp-slider-prev:active {
+    left: 12px !important;
+    right: auto !important;
 }
 
-.rp-slider-next {
-    right: 12px;
+.rp-slider-next,
+.rp-slider-next:hover,
+.rp-slider-next:focus,
+.rp-slider-next:active {
+    right: 12px !important;
+    left: auto !important;
 }
 
 .rp-slider-prev:hover,
 .rp-slider-next:hover {
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 .rp-slider-prev:disabled,
@@ -147,8 +174,10 @@
 
 .rp-slider-prev svg,
 .rp-slider-next svg {
-    width: 20px;
-    height: 20px;
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
+    pointer-events: none;
 }
 
 /* Slider Dot Indicators */
@@ -160,26 +189,45 @@
     padding: 12px 0;
 }
 
-.rp-slider-dot {
-    width: 10px;
-    height: 10px;
-    min-width: 10px;
-    min-height: 10px;
-    border-radius: 50%;
-    background: #ccc;
-    border: none;
-    padding: 0;
+/* Comprehensive reset for Luma/Hyva button styles */
+.rp-slider-dot,
+.rp-slider-dot:hover,
+.rp-slider-dot:focus,
+.rp-slider-dot:active {
+    width: 10px !important;
+    height: 10px !important;
+    min-width: 10px !important;
+    min-height: 10px !important;
+    max-width: 10px !important;
+    max-height: 10px !important;
+    border-radius: 50% !important;
+    background: #ccc !important;
+    background-image: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-indent: -9999px !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    transform: none !important;
 }
 
 .rp-slider-dot:hover {
-    background: #999;
+    background: #999 !important;
 }
 
-.rp-slider-dot.rp-dot-active {
-    background: #333;
+.rp-slider-dot.rp-dot-active,
+.rp-slider-dot.rp-dot-active:hover,
+.rp-slider-dot.rp-dot-active:focus,
+.rp-slider-dot.rp-dot-active:active {
+    background: #333 !important;
 }
 
 /* Slider Transition Styles */
@@ -310,18 +358,23 @@
     display: none;
 }
 
-/* Thumbnail item */
+/* Thumbnail item - comprehensive reset for Luma/Hyva */
 .rp-thumbnail-item,
 .rp-thumbnail-item:hover,
 .rp-thumbnail-item:focus,
-.rp-thumbnail-item:active {
+.rp-thumbnail-item:active,
+.rp-thumbnail-item:visited {
     flex-shrink: 0;
-    width: 70px;
-    height: 70px;
-    padding: 0;
-    margin: 0;
-    border: 2px solid transparent;
-    border-radius: 4px;
+    width: 70px !important;
+    height: 70px !important;
+    min-width: 70px !important;
+    min-height: 70px !important;
+    max-width: 70px !important;
+    max-height: 70px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 2px solid transparent !important;
+    border-radius: 4px !important;
     background: none !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -330,22 +383,26 @@
     overflow: hidden;
     opacity: 0.6;
     transition: opacity 0.2s ease, border-color 0.2s ease;
-    text-transform: none;
-    letter-spacing: normal;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    outline: none !important;
+    text-decoration: none !important;
+    transform: none !important;
+    box-sizing: border-box !important;
 }
 
 .rp-thumbnail-item:hover {
     opacity: 0.85;
-    outline: none !important;
 }
 
-.rp-thumbnail-item:focus {
-    outline: none !important;
-}
-
-.rp-thumbnail-item.rp-thumbnail-active {
+.rp-thumbnail-item.rp-thumbnail-active,
+.rp-thumbnail-item.rp-thumbnail-active:hover,
+.rp-thumbnail-item.rp-thumbnail-active:focus,
+.rp-thumbnail-item.rp-thumbnail-active:active {
     opacity: 1;
-    border-color: #333;
+    border-color: #333 !important;
 }
 
 .rp-thumbnail-item img {
