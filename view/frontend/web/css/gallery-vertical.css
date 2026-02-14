@@ -523,14 +523,23 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-.rp-accordion-header {
+.rp-accordion-header,
+.rp-accordion-header:hover,
+.rp-accordion-header:focus,
+.rp-accordion-header:active,
+.rp-accordion-header:visited {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     padding: 16px 0;
-    background: none;
-    border: none;
+    margin: 0;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
@@ -539,6 +548,9 @@
     line-height: 1.4;
     transition: color 0.2s ease;
     font-family: inherit;
+    text-transform: none;
+    letter-spacing: normal;
+    text-decoration: none;
 }
 
 .rp-accordion-header:hover {
@@ -621,16 +633,26 @@
     pointer-events: none;
 }
 
-.rp-accordion-readmore {
+.rp-accordion-readmore,
+.rp-accordion-readmore:hover,
+.rp-accordion-readmore:focus,
+.rp-accordion-readmore:active {
     display: block;
-    background: none;
-    border: none;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     color: #1979c3;
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
     padding: 8px 0 16px;
+    margin: 0;
     text-decoration: underline;
+    text-transform: none;
+    letter-spacing: normal;
     font-family: inherit;
 }
 
@@ -639,13 +661,14 @@
 }
 
 @media screen and (max-width: 767px) {
-    .rp-accordion-header {
-        font-size: 15px;
-        padding: 14px 0;
+    /* On mobile: hide accordion, restore original Magento tabs */
+    .rp-accordion {
+        display: none !important;
     }
 
-    .rp-accordion-content {
-        font-size: 13px;
+    .rp-inline-tabs .product.info.detailed,
+    .product.info.detailed {
+        display: block !important;
     }
 }
 
