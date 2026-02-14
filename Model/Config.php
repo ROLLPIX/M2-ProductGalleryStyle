@@ -31,6 +31,10 @@ class Config
     private const XML_PATH_TABS_INLINE_ENABLED = 'rollpix_gallery/tabs/inline_enabled';
     private const XML_PATH_TABS_DESC_MAX_HEIGHT = 'rollpix_gallery/tabs/description_max_height';
     private const XML_PATH_THUMBNAIL_POSITION = 'rollpix_gallery/layout/thumbnail_position';
+    private const XML_PATH_SLIDER_DIRECTION = 'rollpix_gallery/layout/slider_direction';
+    private const XML_PATH_SLIDER_TRANSITION = 'rollpix_gallery/layout/slider_transition';
+    private const XML_PATH_SLIDER_ARROWS = 'rollpix_gallery/layout/slider_arrows';
+    private const XML_PATH_SLIDER_DOTS = 'rollpix_gallery/layout/slider_dots';
     private const XML_PATH_SHIMMER_ENABLED = 'rollpix_gallery/effects/shimmer_enabled';
     private const XML_PATH_FADEIN_ENABLED = 'rollpix_gallery/effects/fadein_enabled';
     private const XML_PATH_COUNTER_ENABLED = 'rollpix_gallery/effects/counter_enabled';
@@ -186,6 +190,42 @@ class Config
         ) ?: 'disabled';
     }
 
+    public function getSliderDirection(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_SLIDER_DIRECTION,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 'horizontal';
+    }
+
+    public function getSliderTransition(?int $storeId = null): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            self::XML_PATH_SLIDER_TRANSITION,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: 'fade';
+    }
+
+    public function isSliderArrowsEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_SLIDER_ARROWS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function isSliderDotsEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_SLIDER_DOTS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     public function isShimmerEnabled(?int $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
@@ -244,6 +284,12 @@ class Config
             'tabs' => [
                 'inlineEnabled' => $this->isInlineTabsEnabled($storeId),
                 'descriptionMaxHeight' => $this->getDescriptionMaxHeight($storeId)
+            ],
+            'slider' => [
+                'direction' => $this->getSliderDirection($storeId),
+                'transition' => $this->getSliderTransition($storeId),
+                'arrows' => $this->isSliderArrowsEnabled($storeId),
+                'dots' => $this->isSliderDotsEnabled($storeId)
             ],
             'effects' => [
                 'shimmerEnabled' => $this->isShimmerEnabled($storeId),

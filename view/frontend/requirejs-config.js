@@ -12,7 +12,8 @@ var config = {
             'rpStickyScroll': 'Rollpix_ProductGallery/js/gallery-sticky',
             'rpGalleryTabs': 'Rollpix_ProductGallery/js/gallery-tabs',
             'rpGalleryEffects': 'Rollpix_ProductGallery/js/gallery-effects',
-            'rpGalleryThumbnails': 'Rollpix_ProductGallery/js/gallery-thumbnails'
+            'rpGalleryThumbnails': 'Rollpix_ProductGallery/js/gallery-thumbnails',
+            'rpGallerySlider': 'Rollpix_ProductGallery/js/gallery-slider'
         }
     }
 };

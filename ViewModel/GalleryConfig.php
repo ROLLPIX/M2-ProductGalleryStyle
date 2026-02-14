@@ -133,7 +133,7 @@ class GalleryConfig implements ArgumentInterface
         $layoutType = $this->getLayoutType();
         $position = $this->getGalleryPosition();
 
-        if ($layoutType === 'grid' || $layoutType === 'fashion' || $layoutType === 'masonry') {
+        if ($layoutType === 'grid' || $layoutType === 'fashion' || $layoutType === 'slider') {
             $gridRatio = $this->getGridRatio();
             $parts = explode('_', $gridRatio);
             $col1 = (int) ($parts[0] ?? 70);
@@ -151,7 +151,7 @@ class GalleryConfig implements ArgumentInterface
                 'infoOrder' => $position === 'left' ? 2 : 1
             ];
 
-            if ($layoutType === 'grid' || $layoutType === 'masonry') {
+            if ($layoutType === 'grid') {
                 $result['gridImageColumns'] = $this->getGridImageColumns();
             }
 

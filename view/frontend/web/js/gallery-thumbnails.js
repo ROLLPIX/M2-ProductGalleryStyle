@@ -2,6 +2,7 @@
  * Rollpix ProductGallery - Thumbnail Navigation Strip
  *
  * IntersectionObserver-based active state tracking + click-to-scroll.
+ * For slider layout, tracking and clicks are handled by gallery-slider.js.
  * Desktop only (hidden on mobile via CSS).
  *
  * @category  Rollpix
@@ -16,6 +17,7 @@ define([
     return function (config, element) {
         var $gallery = $(element);
         var thumbnailPosition = config.layout ? config.layout.thumbnailPosition : 'disabled';
+        var layoutType = config.layout ? config.layout.type : 'vertical';
 
         if (thumbnailPosition === 'disabled') {
             return;
@@ -37,6 +39,11 @@ define([
         initThumbnailClicks();
 
         function initThumbnailTracking() {
+            // Slider JS manages active thumbnail state
+            if (layoutType === 'slider') {
+                return;
+            }
+
             if (!('IntersectionObserver' in window)) {
                 return;
             }
@@ -62,6 +69,11 @@ define([
         }
 
         function initThumbnailClicks() {
+            // Slider JS handles thumbnail clicks directly
+            if (layoutType === 'slider') {
+                return;
+            }
+
             $thumbnails.on('click', function () {
                 var index = $(this).data('thumb-index');
                 var $targetItem = $items.eq(index);

@@ -82,20 +82,153 @@
 }
 
 /* ==============================================
-   Masonry Layout: CSS columns for Pinterest-style
+   Slider Layout: Single image with navigation
    ============================================== */
 
-.rp-layout-masonry .rp-gallery-images {
-    display: block;
-    column-count: var(--rp-grid-cols, 2);
-    column-gap: var(--rp-image-gap);
+.rp-layout-slider .rp-gallery-images {
+    position: relative;
+    overflow: hidden;
 }
 
-.rp-layout-masonry .rp-gallery-item {
-    break-inside: avoid;
-    margin-bottom: var(--rp-image-gap);
-    display: inline-block;
+.rp-layout-slider .rp-gallery-item {
     width: 100%;
+}
+
+.rp-layout-slider .rp-gallery-item img {
+    width: 100%;
+    height: auto;
+}
+
+/* Slider Navigation Arrows */
+.rp-slider-prev,
+.rp-slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    color: #333;
+    padding: 0;
+}
+
+.rp-slider-prev {
+    left: 12px;
+}
+
+.rp-slider-next {
+    right: 12px;
+}
+
+.rp-slider-prev:hover,
+.rp-slider-next:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rp-slider-prev:disabled,
+.rp-slider-next:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
+.rp-slider-prev svg,
+.rp-slider-next svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Slider Dot Indicators */
+.rp-slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+}
+
+.rp-slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.rp-slider-dot:hover {
+    background: #999;
+}
+
+.rp-slider-dot.rp-dot-active {
+    background: #333;
+    transform: scale(1.2);
+}
+
+/* Slider Transition Styles */
+.rp-layout-slider .rp-gallery-item.rp-slide-enter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Slide transition: horizontal */
+.rp-layout-slider .rp-gallery-item.rp-slide-enter-left {
+    transform: translateX(100%);
+}
+
+.rp-layout-slider .rp-gallery-item.rp-slide-enter-right {
+    transform: translateX(-100%);
+}
+
+/* Slide transition: vertical */
+.rp-layout-slider .rp-gallery-item.rp-slide-enter-down {
+    transform: translateY(100%);
+}
+
+.rp-layout-slider .rp-gallery-item.rp-slide-enter-up {
+    transform: translateY(-100%);
+}
+
+.rp-layout-slider .rp-gallery-item.rp-slide-active {
+    transform: translate(0, 0);
+    transition: transform 0.35s ease;
+}
+
+.rp-layout-slider .rp-gallery-item.rp-slide-exit {
+    transition: transform 0.35s ease;
+}
+
+/* Zoom-fade transition */
+.rp-layout-slider .rp-gallery-item.rp-zoom-exit {
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+.rp-layout-slider .rp-gallery-item.rp-zoom-enter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.rp-layout-slider .rp-gallery-item.rp-zoom-enter-active {
+    opacity: 1;
 }
 
 /* ==============================================
@@ -474,7 +607,7 @@
         gap: 10px;
     }
 
-    /* Grid, fashion, masonry layouts collapse to single column on mobile */
+    /* Grid, fashion layouts collapse to single column on mobile */
     .rp-layout-grid .rp-gallery-images,
     .rp-layout-fashion .rp-gallery-images {
         grid-template-columns: 1fr;
@@ -485,8 +618,11 @@
         grid-column: span 1;
     }
 
-    .rp-layout-masonry .rp-gallery-images {
-        column-count: 1;
+    /* Hide slider arrows and dots on mobile */
+    .rp-slider-prev,
+    .rp-slider-next,
+    .rp-slider-dots {
+        display: none !important;
     }
 
     /* Hide thumbnails on mobile */
@@ -813,10 +949,6 @@
     font-family: inherit;
 }
 
-.rp-accordion-readmore:hover {
-    color: #006bb4;
-}
-
 @media screen and (max-width: 767px) {
     /* On mobile: hide accordion, restore original Magento tabs */
     .rp-accordion {
@@ -990,6 +1122,17 @@
     .rp-thumbnail-strip {
         scroll-behavior: auto;
     }
+
+    /* Slider: disable all transitions */
+    .rp-slider-prev,
+    .rp-slider-next,
+    .rp-slider-dot {
+        transition: none;
+    }
+
+    .rp-layout-slider .rp-gallery-item {
+        transition: none !important;
+    }
 }
 
 /* ==============================================
@@ -1023,7 +1166,10 @@
 
     /* Hide non-printable elements */
     .rp-counter-display,
-    .rp-thumbnail-strip {
+    .rp-thumbnail-strip,
+    .rp-slider-prev,
+    .rp-slider-next,
+    .rp-slider-dots {
         display: none !important;
     }
 

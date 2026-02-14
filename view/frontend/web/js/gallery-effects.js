@@ -15,6 +15,12 @@ define([
     return function (config, element) {
         var $gallery = $(element);
         var effects = config.effects || {};
+        var layoutType = config.layout ? config.layout.type : 'vertical';
+
+        // Safety: shimmer and fade-in conflict. If both enabled, disable shimmer.
+        if (effects.shimmerEnabled && effects.fadeInEnabled) {
+            effects.shimmerEnabled = false;
+        }
 
         // =========================================
         // SHIMMER LOADING
@@ -83,9 +89,9 @@ define([
         }
 
         // =========================================
-        // IMAGE COUNTER
+        // IMAGE COUNTER (slider layout only)
         // =========================================
-        if (effects.counterEnabled) {
+        if (effects.counterEnabled && layoutType === 'slider') {
             initCounter();
         }
 
@@ -97,50 +103,19 @@ define([
                 return;
             }
 
-            if (!('IntersectionObserver' in window)) {
-                return;
-            }
-
             var $counter = $('<div class="rp-counter-display"></div>');
             $('body').append($counter);
 
-            var visibleItems = {};
             var hideTimeout;
 
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    var index = $items.index(entry.target);
-                    if (entry.isIntersecting) {
-                        visibleItems[index] = true;
-                    } else {
-                        delete visibleItems[index];
-                    }
-                });
+            // Show initial state
+            $counter.text('1 / ' + totalImages);
 
-                var indices = Object.keys(visibleItems).map(Number);
-                if (indices.length > 0) {
-                    var currentVisible = Math.min.apply(null, indices) + 1;
-                    $counter.text(currentVisible + ' / ' + totalImages);
-                    $counter.addClass('rp-counter-visible');
-
-                    clearTimeout(hideTimeout);
-                    hideTimeout = setTimeout(function () {
-                        $counter.removeClass('rp-counter-visible');
-                    }, 2000);
-                }
-            }, {
-                threshold: 0.5
-            });
-
-            $items.each(function () {
-                observer.observe(this);
-            });
-
-            $(window).on('scroll.rpcounter', function () {
-                if (window.innerWidth <= 767) {
-                    return;
-                }
+            // Listen for slider change events
+            $gallery.on('rpslider:change', function (e, currentIndex, total) {
+                $counter.text((currentIndex + 1) + ' / ' + total);
                 $counter.addClass('rp-counter-visible');
+
                 clearTimeout(hideTimeout);
                 hideTimeout = setTimeout(function () {
                     $counter.removeClass('rp-counter-visible');

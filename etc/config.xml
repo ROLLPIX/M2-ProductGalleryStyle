@@ -26,6 +26,10 @@
                 <grid_image_columns>2</grid_image_columns>
                 <image_gap>20</image_gap>
                 <thumbnail_position>disabled</thumbnail_position>
+                <slider_direction>horizontal</slider_direction>
+                <slider_transition>fade</slider_transition>
+                <slider_arrows>1</slider_arrows>
+                <slider_dots>1</slider_dots>
             </layout>
             <!-- Mobile Settings -->
             <mobile>

@@ -138,7 +138,7 @@
                     <comment>Width ratio between image grid and product info sidebar (grid layout)</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\GridRatio</source_model>
                     <depends>
-                        <field id="type" separator=",">grid,fashion,masonry</field>
+                        <field id="type" separator=",">grid,fashion,slider</field>
                     </depends>
                 </field>
 
@@ -153,7 +153,7 @@
                     <comment>Number of image columns within the grid area</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\GridImageColumns</source_model>
                     <depends>
-                        <field id="type" separator=",">grid,masonry</field>
+                        <field id="type">grid</field>
                     </depends>
                 </field>
 
@@ -169,16 +169,79 @@
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ImageGap</source_model>
                 </field>
 
+                <field id="slider_direction"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="36"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Slider Direction</label>
+                    <comment>Direction of slide transition when navigating between images</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\SliderDirection</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
+                </field>
+
+                <field id="slider_transition"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="37"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Slider Transition</label>
+                    <comment>Visual effect when switching between images</comment>
+                    <source_model>Rollpix\ProductGallery\Model\Config\Source\SliderTransition</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
+                </field>
+
+                <field id="slider_arrows"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="38"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Slider Navigation Arrows</label>
+                    <comment>Show prev/next arrow buttons on the slider</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
+                </field>
+
+                <field id="slider_dots"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="39"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Slider Dot Indicators</label>
+                    <comment>Show dot indicators below the slider for navigation</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
+                </field>
+
                 <field id="thumbnail_position"
                        translate="label comment"
                        type="select"
-                       sortOrder="35"
+                       sortOrder="40"
                        showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Thumbnail Navigation</label>
-                    <comment>Show a strip of small thumbnail images for quick navigation. Desktop only.</comment>
+                    <comment>Show a strip of small thumbnail images for quick navigation. Desktop only. Only available for Slider layout.</comment>
                     <source_model>Rollpix\ProductGallery\Model\Config\Source\ThumbnailPosition</source_model>
+                    <depends>
+                        <field id="type">slider</field>
+                    </depends>
                 </field>
             </group>
 
@@ -212,8 +275,11 @@
                        showInWebsite="1"
                        showInStore="1">
                     <label>Fade-in on Scroll</label>
-                    <comment>Subtle opacity and slide-up animation when images enter the viewport</comment>
+                    <comment>Subtle opacity and slide-up animation when images enter the viewport. Not available when shimmer is enabled.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="shimmer_enabled">0</field>
+                    </depends>
                 </field>
 
                 <field id="counter_enabled"
@@ -224,7 +290,7 @@
                        showInWebsite="1"
                        showInStore="1">
                     <label>Image Counter</label>
-                    <comment>Show "3 / 8" position indicator while scrolling through images (desktop only)</comment>
+                    <comment>Show position indicator while navigating images. Only effective with Slider layout.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
@@ -233,7 +299,7 @@
             <group id="mobile"
                    translate="label"
                    type="text"
-                   sortOrder="40"
+                   sortOrder="90"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">

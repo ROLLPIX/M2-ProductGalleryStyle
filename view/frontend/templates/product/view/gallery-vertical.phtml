@@ -94,7 +94,7 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
         --rp-info-order: <?= (int)$columnCss['infoOrder'] ?>;
         --rp-sticky-offset: <?= (int)$stickyOffset ?>px;
         --rp-image-gap: <?= (int)$imageGap ?>px;
-        <?php if ($layoutType === 'grid' || $layoutType === 'masonry'): ?>
+        <?php if ($layoutType === 'grid'): ?>
         --rp-grid-cols: <?= (int)$gridImageColumns ?>;
         <?php endif; ?>
     }
@@ -124,7 +124,7 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
 
 <div class="<?= $block->escapeHtmlAttr(implode(' ', $wrapperClasses)) ?>"
      data-role="rp-gallery"
-     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryEffects": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryThumbnails": <?= /* @noEscape */ $jsConfig ?>}'>
+     data-mage-init='{"rpGalleryZoom": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryCarousel": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryTabs": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryEffects": <?= /* @noEscape */ $jsConfig ?>, "rpGalleryThumbnails": <?= /* @noEscape */ $jsConfig ?>, "rpGallerySlider": <?= /* @noEscape */ $jsConfig ?>}'>
 
     <div class="rp-gallery-images">
         <?php foreach ($images as $image): ?>
@@ -145,6 +145,16 @@ $gridImageColumns = $columnCss['gridImageColumns'] ?? 2;
             </a>
         <?php endforeach; ?>
     </div>
+
+    <?php if ($layoutType === 'slider'): ?>
+    <button class="rp-slider-prev" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Previous image')) ?>">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button class="rp-slider-next" type="button" aria-label="<?= $block->escapeHtmlAttr(__('Next image')) ?>">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+    <div class="rp-slider-dots" data-role="rp-slider-dots"></div>
+    <?php endif; ?>
 
     <?php if ($thumbnailPosition !== 'disabled'): ?>
     <div class="rp-thumbnail-strip" data-role="rp-thumbnails">
