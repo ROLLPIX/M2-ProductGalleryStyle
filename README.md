@@ -1,6 +1,6 @@
 # Rollpix Product Gallery for Magento 2
 
-A modern, editorial-style product gallery module for Magento 2 that replaces the default Fotorama gallery with vertical and grid scrolling layouts. Features sticky product info panel with multiple modes, hover/click/lightbox zoom, and mobile carousel with sticky behavior.
+A modern, editorial-style product gallery module for Magento 2 that replaces the default Fotorama gallery. Features four layout modes (vertical, grid, fashion, slider), five zoom types (hover, click, lightbox, modal, disabled), thumbnail navigation with overlay option, inline accordion tabs, shimmer loading, fade-in animations, and a mobile-first carousel experience.
 
 ![Magento 2](https://img.shields.io/badge/Magento-2.4.7--2.4.8-orange.svg)
 ![PHP](https://img.shields.io/badge/PHP-8.1--8.4-blue.svg)
@@ -8,24 +8,51 @@ A modern, editorial-style product gallery module for Magento 2 that replaces the
 
 ## Features
 
-### Layout
-- **Vertical Layout**: Images stacked vertically in one column, product info on the other
-- **Grid Layout**: Images in a multi-column grid (2 or 3 columns) with product info sidebar
+### Layout Modes
+- **Vertical**: Images stacked in a single column, product info on the side
+- **Grid**: Multi-column image grid (2 or 3 columns) with product info sidebar
+- **Fashion**: Alternating 1-2 image pattern (1 full-width, 2 half-width, repeat) with orphan handling
+- **Slider**: Single image at a time with configurable transitions, arrows, dots, keyboard, and mousewheel navigation
 - **Configurable Position**: Gallery on left or right side
-- **Flexible Column Ratios**: Vertical mode: 40/60, 50/50, or 60/40. Grid mode: 70/30, 75/25, or 80/20
+- **Flexible Column Ratios**: 20/80 through 80/20 in 5% increments (13 options)
 - **Adjustable Image Gap**: Configure spacing between images (0-40px)
+
+### Slider Options
+- **Transition Effects**: Fade (cross-fade), Slide (directional), Zoom-fade (zoom out + fade)
+- **Slide Direction**: Horizontal or Vertical
+- **Navigation Arrows**: Prev/next buttons with Luma-compatible styling
+- **Dot Indicators**: Clickable dot navigation below the slider
+- **Mousewheel Navigation**: Scroll wheel to switch slides (configurable)
+- **Keyboard Support**: Arrow keys to navigate
+
+### Thumbnail Navigation (Slider Layout)
+- **Positions**: Left, Right, or Below the slider image
+- **Display Styles**: Outside (alongside image) or Overlay (floating inside image with blur background)
+- **Active State**: Highlighted border on the currently visible image
+- **Overlay Arrow Fix**: Slider arrows automatically shift inward when overlay thumbnails are active
 
 ### Zoom Options
 - **Hover Magnifier**: Zoom on mouse hover with lens indicator and magnified view (right side or inside image)
 - **Click Zoom**: Click to zoom into the image in-place, click again to reset
-- **Lightbox Mode**: Full-screen image viewing with GLightbox navigation
-- **Configurable Zoom Level**: 2x to 10x magnification
+- **Lightbox**: Full-screen image viewing with GLightbox navigation, touch, and keyboard support
+- **Modal Zoom**: Full-screen overlay with all product images stacked vertically; clicking image N scrolls to that image. Includes a bouncing scroll indicator that auto-hides after 3 seconds or on scroll. Close via X button, overlay click, or Escape key
+- **Configurable Zoom Level**: 2x to 10x magnification (hover and click modes)
 - **Disabled Option**: Turn off zoom entirely
+
+### Inline Accordion Tabs
+- Move product detail tabs (Description, Additional Info, Reviews) inside the product info column as collapsible accordion sections
+- Description truncation with gradient fade and "Read more" link (configurable max height)
+- Desktop only: on mobile, original Magento tabs are restored
+
+### Effects & Animations
+- **Shimmer Loading**: Animated shimmer placeholder while images load, with smooth fade-in on completion
+- **Fade-in on Scroll**: Subtle opacity + slide-up animation when images enter the viewport (alternative to shimmer)
+- **Image Counter**: Fixed position indicator showing current/total image count (slider layout)
 
 ### Sticky Panel
 - **Two Sticky Modes**:
   - **Frame Mode**: Info panel scrolls inside a fixed-height container
-  - **Natural Scroll Mode**: Info panel stays fixed at the top while images scroll (like Quiksilver.com)
+  - **Natural Scroll Mode**: Info panel stays fixed at the top while images scroll
 - **Configurable Offset**: Adjust top offset for sites with fixed headers
 - **Toggle On/Off**: Enable or disable sticky behavior
 
@@ -88,20 +115,42 @@ Navigate to **Stores > Configuration > Rollpix > Product Gallery**
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| Layout Type | Vertical (single column) or Grid (multi-column) | Vertical |
+| Layout Type | Vertical, Grid, Fashion, or Slider | Vertical |
 | Gallery Position | Left or Right | Left |
 | Column Ratio | 40/60, 50/50, or 60/40 (vertical mode) | 50/50 |
-| Grid Ratio | 70/30, 75/25, or 80/20 (grid mode) | 70/30 |
+| Grid Ratio | 20/80 through 80/20 in 5% increments (grid/fashion/slider) | 70/30 |
 | Image Columns in Grid | 2 or 3 columns (grid mode) | 2 |
 | Gap Between Images | Spacing in pixels (0-40) | 20px |
+| Slider Direction | Horizontal or Vertical (slider mode) | Horizontal |
+| Slider Transition | Fade, Slide, or Zoom-fade (slider mode) | Fade |
+| Navigation Arrows | Show prev/next buttons (slider mode) | Yes |
+| Dot Indicators | Show dot navigation (slider mode) | Yes |
+| Mousewheel Navigation | Scroll to switch slides (slider mode) | Yes |
+| Thumbnail Navigation | Left, Right, Bottom, or Disabled (slider mode) | Disabled |
+| Thumbnail Display Style | Outside or Overlay (slider mode) | Outside |
 
 ### Zoom Settings
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| Zoom Type | Hover Magnifier, Click Zoom, Lightbox, or Disabled | Hover |
-| Zoom Level | Magnification level (2x-10x) | 3x |
+| Zoom Type | Hover Magnifier, Click Zoom, Lightbox, Modal Zoom, or Disabled | Hover |
+| Zoom Level | Magnification level 2x-10x (hover and click modes) | 3x |
 | Zoom Window Position | Right Side or Inside Image (hover mode) | Right |
+
+### Effects & Animations
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| Shimmer Loading | Animated placeholder while images load | No |
+| Fade-in on Scroll | Opacity + slide-up animation on viewport entry (requires shimmer off) | No |
+| Image Counter | Position indicator for slider layout | No |
+
+### Product Tabs
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| Inline Accordion Tabs | Move tabs inside product info as collapsible accordion | No |
+| Description Max Height | Max height before "Read more" link (0 to disable) | 0 |
 
 ### Sticky Panel Settings
 
@@ -121,101 +170,160 @@ Navigate to **Stores > Configuration > Rollpix > Product Gallery**
 
 ### Desktop - Vertical Layout (50/50)
 ```
-┌─────────────────────────────────────────────┐
-│  ┌─────────────┐    ┌─────────────────────┐ │
-│  │             │    │ Product Title       │ │
-│  │   Image 1   │    │ $99.00              │ │
-│  │             │    │                     │ │
-│  └─────────────┘    │ [Add to Cart]       │ │
-│                     │                     │ │
-│  ┌─────────────┐    │ Description...      │ │
-│  │             │    │                     │ │
-│  │   Image 2   │    │  (Sticky Panel)     │ │
-│  │             │    │                     │ │
-│  └─────────────┘    └─────────────────────┘ │
-│                                             │
-│  ┌─────────────┐                            │
-│  │   Image 3   │                            │
-│  └─────────────┘                            │
-└─────────────────────────────────────────────┘
++---------------------------------------------+
+|  +-------------+    +---------------------+ |
+|  |             |    | Product Title       | |
+|  |   Image 1   |    | $99.00              | |
+|  |             |    |                     | |
+|  +-------------+    | [Add to Cart]       | |
+|                     |                     | |
+|  +-------------+    | Description...      | |
+|  |             |    |                     | |
+|  |   Image 2   |    |  (Sticky Panel)     | |
+|  |             |    |                     | |
+|  +-------------+    +---------------------+ |
+|                                             |
+|  +-------------+                            |
+|  |   Image 3   |                            |
+|  +-------------+                            |
++---------------------------------------------+
 ```
 
 ### Desktop - Grid Layout (70/30, 2 columns)
 ```
-┌──────────────────────────────────┬──────────────┐
-│  ┌──────────┐  ┌──────────┐     │              │
-│  │  Img 1   │  │  Img 2   │     │  Product     │
-│  └──────────┘  └──────────┘     │  $99.00      │
-│  ┌──────────┐  ┌──────────┐     │              │
-│  │  Img 3   │  │  Img 4   │     │  [Add to     │
-│  └──────────┘  └──────────┘     │   Cart]      │
-│  ┌──────────┐                   │              │
-│  │  Img 5   │                   │  (Sticky)    │
-│  └──────────┘                   │              │
-│         70%                     │     30%      │
-└──────────────────────────────────┴──────────────┘
++----------------------------------+--------------+
+|  +----------+  +----------+     |              |
+|  |  Img 1   |  |  Img 2   |     |  Product     |
+|  +----------+  +----------+     |  $99.00      |
+|  +----------+  +----------+     |              |
+|  |  Img 3   |  |  Img 4   |     |  [Add to     |
+|  +----------+  +----------+     |   Cart]      |
+|  +----------+                   |              |
+|  |  Img 5   |                   |  (Sticky)    |
+|  +----------+                   |              |
+|         70%                     |     30%      |
++----------------------------------+--------------+
+```
+
+### Desktop - Fashion Layout
+```
++----------------------------------+--------------+
+|  +---------------------------+  |              |
+|  |        Image 1 (full)     |  |  Product     |
+|  +---------------------------+  |  $99.00      |
+|  +------------+ +------------+  |              |
+|  |   Img 2    | |   Img 3    |  |  [Add to     |
+|  +------------+ +------------+  |   Cart]      |
+|  +---------------------------+  |              |
+|  |        Image 4 (full)     |  |  (Sticky)    |
+|  +---------------------------+  |              |
++----------------------------------+--------------+
+```
+
+### Desktop - Slider Layout with Thumbnails
+```
++----------------------------------+--------------+
+|  +--+ +----------------------+  |              |
+|  |T1| |                      |  |  Product     |
+|  +--+ |    < Image 2 >       |  |  $99.00      |
+|  |T2| |                      |  |              |
+|  +--+ |                      |  |  [Add to     |
+|  |T3| +----------------------+  |   Cart]      |
+|  +--+      o  *  o  o  o       |              |
++----------------------------------+--------------+
+```
+
+### Modal Zoom (full-screen stack)
+```
++---------------------------------------------+
+|                                         [X] |
+|                                             |
+|         +-------------------------+         |
+|         |       Image 1           |         |
+|         +-------------------------+         |
+|         +-------------------------+         |
+|         |       Image 2           |         |
+|         +-------------------------+         |
+|         +-------------------------+         |
+|         |       Image 3           |         |
+|         +-------------------------+         |
+|                                             |
+|               v Scroll para ver mas         |
++---------------------------------------------+
 ```
 
 ### Mobile Carousel (Sticky)
 ```
-┌───────────────┐
-│               │  ← Image stays fixed
-│   Image 1     │    at top while
-│               │    scrolling down
-│   ● ○ ○ ○ ○   │  ← Overlay indicators
-├───────────────┤
-│ Product Title │  ← Scrolls over
-│ $99.00        │    the image
-│ [Add to Cart] │
-└───────────────┘
++---------------+
+|               |  <- Image stays fixed
+|   Image 1     |    at top while
+|               |    scrolling down
+|   * o o o o   |  <- Overlay indicators
++---------------+
+| Product Title |  <- Scrolls over
+| $99.00        |    the image
+| [Add to Cart] |
++---------------+
 ```
 
 ## File Structure
 
 ```
 app/code/Rollpix/ProductGallery/
-├── registration.php
-├── composer.json
-├── README.md
-├── LICENSE
-├── etc/
-│   ├── module.xml
-│   ├── config.xml
-│   ├── acl.xml
-│   ├── di.xml
-│   └── adminhtml/
-│       └── system.xml
-├── Model/
-│   ├── Config.php
-│   └── Config/Source/
-│       ├── LayoutType.php
-│       ├── ColumnRatio.php
-│       ├── GridRatio.php
-│       ├── GridImageColumns.php
-│       ├── GalleryPosition.php
-│       ├── ImageGap.php
-│       ├── ZoomType.php
-│       ├── ZoomLevel.php
-│       ├── ZoomPosition.php
-│       ├── StickyMode.php
-│       └── MobileBehavior.php
-├── ViewModel/
-│   └── GalleryConfig.php
-└── view/
-    └── frontend/
-        ├── layout/
-        │   └── catalog_product_view.xml
-        ├── templates/
-        │   └── product/view/
-        │       └── gallery-vertical.phtml
-        ├── requirejs-config.js
-        └── web/
-            ├── css/
-            │   └── gallery-vertical.css
-            └── js/
-                ├── gallery-zoom.js
-                ├── gallery-carousel.js
-                └── gallery-sticky.js
++-- registration.php
++-- composer.json
++-- README.md
++-- LICENSE
++-- etc/
+|   +-- module.xml
+|   +-- config.xml
+|   +-- acl.xml
+|   +-- di.xml
+|   +-- adminhtml/
+|       +-- system.xml
++-- Block/
+|   +-- Adminhtml/System/Config/
+|       +-- ModuleInfo.php
++-- Model/
+|   +-- Config.php
+|   +-- Config/Source/
+|       +-- LayoutType.php
+|       +-- ColumnRatio.php
+|       +-- GridRatio.php
+|       +-- GridImageColumns.php
+|       +-- GalleryPosition.php
+|       +-- ImageGap.php
+|       +-- ZoomType.php
+|       +-- ZoomLevel.php
+|       +-- ZoomPosition.php
+|       +-- StickyMode.php
+|       +-- MobileBehavior.php
+|       +-- SliderDirection.php
+|       +-- SliderTransition.php
+|       +-- ThumbnailPosition.php
+|       +-- ThumbnailStyle.php
++-- ViewModel/
+|   +-- GalleryConfig.php
++-- view/
+    +-- frontend/
+        +-- layout/
+        |   +-- catalog_product_view.xml
+        +-- templates/
+        |   +-- product/view/
+        |       +-- gallery-vertical.phtml
+        +-- requirejs-config.js
+        +-- web/
+            +-- css/
+            |   +-- gallery-vertical.css
+            +-- js/
+                +-- gallery-zoom.js
+                +-- gallery-carousel.js
+                +-- gallery-sticky.js
+                +-- gallery-slider.js
+                +-- gallery-tabs.js
+                +-- gallery-effects.js
+                +-- gallery-thumbnails.js
+                +-- gallery-modal-zoom.js
 ```
 
 ## Customization
@@ -313,17 +421,39 @@ Contributions are welcome! Please follow these steps:
 
 - [ ] Admin configuration for enable/disable per category
 - [ ] Video support in gallery
-- [ ] Thumbnail strip option
-- [ ] Image counter overlay
-- [ ] Custom animations/transitions
 - [ ] Integration with PageBuilder
 
 ## Changelog
+
+### 1.5.0 (2026-02-14)
+- **Modal Zoom**: New zoom type that opens a full-screen overlay with all product images stacked vertically; clicking image N scrolls the modal to that image
+- Scroll indicator with bounce animation, auto-hides after 3 seconds or on first scroll
+- Close modal via X button, clicking the dark overlay, or pressing Escape
+- Body scroll locked while modal is open
+- Fix overlay thumbnail strips overlapping slider navigation arrows (left and right positions)
+
+### 1.4.0 (2026-02-14)
+- **Slider layout**: New single-image-at-a-time layout with configurable transitions (fade, slide, zoom-fade), direction (horizontal, vertical), navigation arrows, dot indicators, keyboard, and mousewheel support
+- **Thumbnail navigation** (slider layout): Thumbnail strip in left, right, or bottom position with active state highlighting
+- **Thumbnail overlay mode**: Thumbnails and dots float inside the image with blur background instead of taking up space alongside it
+- **Shimmer loading effect**: Animated placeholder while images load, smooth fade-in on completion
+- **Fade-in on scroll**: Subtle opacity + slide-up animation when images enter the viewport
+- **Image counter**: Fixed position indicator showing current/total count (slider layout)
+- Comprehensive Luma button resets on slider arrows, dots, and thumbnail buttons
+- Replaced masonry layout with slider layout
+- Conditional shimmer/fade-in: fade-in disabled when shimmer is active
+- Accordion "Read more" button hover/focus style resets
 
 ### 1.3.1 (2026-02-13)
 - Expanded grid/fashion ratio options: 20/80 through 80/20 (13 options in 5% increments)
 - Dynamic ratio parsing in ViewModel (supports any ratio value)
 - Module info panel in admin config: ROLLPIX branding, GitHub repo link, dynamic version from composer.json
+- Fix ModuleInfo block: use `Template\Context` instead of `Block\Context`
+- Fix registration.php: use `ComponentRegistrar::MODULE` constant
+- Fix accordion button styles: comprehensive Luma/Hyva reset for all states
+- Hide accordion on mobile, restore original Magento tabs
+- Fix mobile layout collapse: remove extra hover/focus effects
+- Fix mobile carousel spacing: reduce gap between image and product info
 
 ### 1.3.0 (2026-02-13)
 - Inline accordion tabs: move product detail tabs (Description, Additional Info, Reviews) inside the product info column as collapsible accordion sections (configurable)

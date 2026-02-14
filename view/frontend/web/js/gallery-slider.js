@@ -116,14 +116,18 @@ define([
 
                 // Mouse wheel navigation on main image (configurable)
                 if (enableMouseWheel) {
-                    $imagesContainer.on('wheel.rpslider', throttle(function (e) {
-                        e.preventDefault();
+                    var throttledWheel = throttle(function (e) {
                         if (e.originalEvent.deltaY > 0) {
                             goToSlide(currentIndex + 1);
                         } else if (e.originalEvent.deltaY < 0) {
                             goToSlide(currentIndex - 1);
                         }
-                    }, 400));
+                    }, 400);
+
+                    $imagesContainer.on('wheel.rpslider', function (e) {
+                        e.preventDefault();
+                        throttledWheel(e);
+                    });
                 }
 
                 // Thumbnail clicks - use DOM index like dots
