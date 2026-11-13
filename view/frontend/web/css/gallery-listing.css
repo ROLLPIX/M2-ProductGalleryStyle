@@ -83,6 +83,18 @@
     transition: opacity 0.2s ease;
 }
 
+/* Theme button:hover/:focus/:active (0,1,1) beat the single class and turned the
+   play circle into a black square (WE-15768) */
+.rp-listing-play-btn:hover,
+.rp-listing-play-btn:focus,
+.rp-listing-play-btn:active {
+    border: none;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    filter: none;
+}
+
 .rp-listing-video-facade:hover .rp-listing-play-btn {
     opacity: 1;
 }
@@ -121,8 +133,32 @@
     opacity: 1;
 }
 
+/*
+ * While the facade is up (no autoplay: prefers-reduced-motion, or not reached yet)
+ * it already has its own play button: two play buttons on one card (WE-15768).
+ * The facade is replaced by the iframe on activation, so this stops matching.
+ */
+.rp-listing-video-facade ~ .rp-listing-playstop {
+    display: none;
+}
+
+/* Theme button:focus/:active (padding 7px 32px, black bg) made it an oval after a tap (WE-15768) */
+.rp-listing-playstop:focus,
+.rp-listing-playstop:active {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: none;
+    filter: none;
+    color: #fff;
+}
+
 .rp-listing-playstop:hover {
     background: rgba(0, 0, 0, 0.8);
+    filter: none;
 }
 
 .rp-listing-playstop svg {
