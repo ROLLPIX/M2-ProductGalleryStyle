@@ -8,6 +8,17 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ---
 
+## [Unreleased]
+
+Hallazgos de Ximena Gomez probando 1.10.0 en prod de Quiksilver el 2026-11-12 ([WE-15768](https://we.rollpix.app/tickets/WE-15768)).
+
+### Fixed
+
+- **`fix(zoom)`**: el zoom del carrusel (`gallery-carousel-zoom.js`) mostraba en negro los videos de **YouTube / Vimeo**: sólo leía `video source` (MP4 local) y armaba un `<video>` sin fuente. Ahora toma el `data-video-embed-url` del item y muestra un iframe 16:9 que entra en el escenario.
+- **`fix(listing)`**: en grillas y categorías, el video de Vimeo/YouTube mostraba un instante **el reproductor del proveedor** antes de arrancar: `ImagePlugin::buildExternalVideoHtml()` pedía `controls=1` fijo. Ahora siempre `controls=0`; el único control del listado es el botón play/pausa propio (`rollpix_gallery/video/listing_controls`), que va por postMessage y no depende de esos controles. Ojo: Vimeo sólo respeta `controls=0` en videos de cuentas pagas.
+- **`fix(css)`**: los botones del módulo se deformaban al tocarlos porque el `button:focus` / `button:active` genérico del tema (Rollpix/base: `padding 7px 32px`, fondo negro; especificidad 0,1,1) le gana a una clase sola. Se agregan estados `:focus` / `:active` a: play/pausa del listado (`.rp-listing-playstop`), flechas del zoom (`.rp-carousel-zoom-prev/next`, 36→66×36 en mobile), puntitos del carrusel (`.rp-carousel-dot`, 10→79×19) y flechas del carrusel mobile (`.rp-carousel-prev/next`).
+- **`fix(mobile)`**: el zoom en el celular quedaba a mitad de pantalla y debajo del header: la regla `sticky !important` del carrusel mobile apuntaba a `.rp-carousel-active`, y el overlay del zoom también lleva esa clase mientras está abierto. Se acota a `.rp-product-gallery.rp-carousel-active`.
+
 ## [1.10.0] — 2026-09-29
 
 ### Added

@@ -121,6 +121,20 @@
     opacity: 1;
 }
 
+/* Theme button:focus/:active (padding 7px 32px, black bg) made it an oval after a tap (WE-15768) */
+.rp-listing-playstop:focus,
+.rp-listing-playstop:active {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: none;
+    filter: none;
+    color: #fff;
+}
+
 .rp-listing-playstop:hover {
     background: rgba(0, 0, 0, 0.8);
 }
