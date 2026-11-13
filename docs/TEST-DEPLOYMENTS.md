@@ -26,6 +26,8 @@ Los hallazgos de Ximena en prod del 2026-11-12 (WE-15768): A zoom con Vimeo, B c
 - E: zoom abierto en mobile con la página scrolleada: overlay `fixed` 0,0 390×900, z-index 10000 sobre el header (100). La galería sigue `sticky` en mobile.
 - Fichas de Quiksilver, Roxy, Ala Moana y RVCA sirven el CSS nuevo; consola sin errores; sin excepciones nuevas.
 
+**Ronda 2 (mismo día, tras lo que vio Ximena: "no se le reproducen solos"):** era `prefers-reduced-motion: reduce` en su equipo (el módulo no hace autoplay a propósito). Con eso activo la tarjeta tenía dos botones de play y el de la portada salía como cuadrado negro con hover (`button:hover` del tema). Corregido en CSS y verificado con Chromium (`reducedMotion: reduce` y `no-preference`, 1366 px y iPhone 13 a 390×900): con reduce, un solo botón (play de portada, fondo transparente); al tocarlo arranca Vimeo y aparece el play/pausa en "pausa". Sin reduce, igual que antes (autoplay + play/pausa en "pausa"). Flecha del carrusel tras tap + blur (hover pegado): 36 px, fondo blanco 0,85. Play de la portada en la ficha con hover: transparente, padding 0. Sin errores JS.
+
 ## 2026-09-28 15:55 — Lautaro Martinez
 
 **Commit:** `9633448` (963344859d1f7892faf4731516986c7c7d6840f9)

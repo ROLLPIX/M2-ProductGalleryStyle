@@ -1022,6 +1022,7 @@
 .rp-carousel-zoom-prev:hover,
 .rp-carousel-zoom-next:hover {
     background: rgba(255, 255, 255, 0.3);
+    filter: none;
 }
 
 /* Counter */
@@ -1334,7 +1335,10 @@
     right: 8px;
 }
 
-/* Same theme button:focus/:active collision as the zoom arrows (WE-15768) */
+/* Same theme button:hover/:focus/:active collision as the zoom arrows; on touch
+   screens :hover sticks after a tap, so it is reset too (WE-15768) */
+.rp-carousel-prev:hover,
+.rp-carousel-next:hover,
 .rp-carousel-prev:focus,
 .rp-carousel-next:focus,
 .rp-carousel-prev:active,
@@ -1888,6 +1892,17 @@
     cursor: pointer;
     opacity: 0.85;
     transition: opacity 0.2s ease;
+}
+
+/* Theme button:hover/:focus/:active would paint it as a black square (WE-15768) */
+.rp-video-facade-play:hover,
+.rp-video-facade-play:focus,
+.rp-video-facade-play:active {
+    border: none;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    filter: none;
 }
 
 .rp-video-facade:hover .rp-video-facade-play {
