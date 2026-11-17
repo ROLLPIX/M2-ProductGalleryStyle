@@ -10,6 +10,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Unreleased]
 
+## [1.10.1] — 2026-11-17
+
 Hallazgos de Ximena Gomez probando 1.10.0 en prod de Quiksilver el 2026-11-12 ([WE-15768](https://we.rollpix.app/tickets/WE-15768)).
 
 ### Fixed

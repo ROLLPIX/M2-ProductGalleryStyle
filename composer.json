@@ -3,7 +3,7 @@
     "description": "Modern editorial-style product gallery for Magento 2 with vertical, grid, fashion and slider layouts, hover zoom, lightbox, sticky panel, thumbnail navigation, shimmer loading, fade-in animations, image counter, mobile carousel, and video support (MP4, YouTube, Vimeo) on product pages and category listings",
     "type": "magento2-module",
     "license": "MIT",
-    "version": "1.10.0",
+    "version": "1.10.1",
     "keywords": [
         "magento2",
         "magento",

@@ -1,66 +1,56 @@
-# Self-Review — Rollpix_ProductGallery v1.10.0
+# Self-Review — Rollpix_ProductGallery v1.10.1
 
-**Builder:** Lautaro Martinez
-**Date:** 2026-09-29
-**Branch:** feat/WE-57003-sticky-gallery-target (PR #11)
+**Builder:** Nehuen Berni
+**Date:** 2026-11-17
+**Branch:** fix/we-15768-zoom-video-listing-controls (PR #12)
+
+Release de arreglos sobre 1.10.0, a partir de lo que encontró Ximena Gomez probando en prod de Quiksilver el 2026-11-12 ([WE-15768](https://we.rollpix.app/tickets/WE-15768)). La revisión de 1.10.0 está en el historial de git de este archivo.
 
 ---
 
 ## 1. Verificación de build
-Corrido en el stage de Marcovecchio ishop16-100926 (2.4.8-p5, PHP 8.2, production mode) con el árbol de la rama copiado sobre `vendor/rollpix/module-product-gallery`.
+Probado en el stage efímero de Quiksilver `quiksilver-we15768.stage.rollpix.dev` (ishop16, 2.4.7-p10, production mode), con el árbol de la rama copiado sobre `vendor/rollpix/module-product-gallery`. Al 2026-11-17 el código de ese vendor es idéntico al tip de la rama (sólo difieren CHANGELOG y docs).
 
-- [x] `bin/magento setup:upgrade` — **N/A**: el módulo no tiene `db_schema.xml`, patches ni `Setup/`, y `module.xml` no cambió desde v1.9.2. `setup:db:status` da "not up to date" en ese stage, pero es drift del sitio, porque este módulo no declara schema.
-- [x] `bin/magento setup:di:compile` — OK: "Generated code and dependency injection configuration successfully", 1 min 7 s. La PDP responde 200 después.
-- [x] `bin/magento setup:static-content:deploy` — OK: `es_AR --area frontend --theme Rollpix/marcovecchio`, 2929/2929. Se verificó por mtime que se generaron `gallery-sticky.min.js` y `gallery-vertical.min.css` nuevos, y que el CSS tiene `rp-sticky-gallery`.
-- [x] `bin/magento module:status Rollpix_ProductGallery` — enabled.
-- [ ] `vendor/bin/phpstan analyse` — **no corrido**: el módulo no tiene `phpstan.neon` (deuda previa, ver `docs/TASKS.md`). Lint `php -l` de 8.2 OK en los 4 archivos PHP/PHTML tocados.
+- [x] `bin/magento setup:upgrade` — **N/A**: el diff no toca `etc/`, `Setup/` ni schema.
+- [x] `bin/magento setup:di:compile` — **N/A**: el único cambio PHP es un argumento (`true` → `false`) dentro de `ImagePlugin::buildExternalVideoHtml()`; no cambian plugins, preferences ni constructores.
+- [x] Estáticos — sólo cambian `gallery-carousel-zoom.js`, `gallery-listing.css` y `gallery-vertical.css`.
+- [x] `php -l` OK en `ImagePlugin.php`; `node --check` OK en `gallery-carousel-zoom.js`.
+- [ ] `vendor/bin/phpstan analyse` — no corrido (deuda previa, ver `docs/TASKS.md`).
 
 ## 2. Verificación funcional
-
-### WE-57003: galería fija en la PDP
-Producto `fox-non-stop-fleece-n31676`, config `sticky/enabled=1`, `target=gallery`, `offset=161`, medido con Playwright.
-- [x] Con *Elemento fijo* = Galería, la galería queda fija bajo el header mientras scrollea la descripción — **Testeado:** a 1280×900 `top` de la galería = 161 px entre scroll 400 y 1600; el panel de info queda `static`.
-- [x] La galería se suelta al final del bloque del producto y no pisa lo de abajo — **Testeado:** a scroll 2600 el bottom de la galería coincide con el bottom de `.rp-product-wrapper` (83 px).
-- [x] Galería más alta que la pantalla — **Testeado:** a 1366×657 (galería de 690 px), al bajar queda `top=-53` / bottom 637 (miniaturas visibles); al subir vuelve a `top=161`.
-- [x] Mobile sin cambios — **Testeado:** a 390×844 sigue el sticky del carrusel (`.rp-carousel-active`) y no queda `top` inline.
-- [x] Con *Elemento fijo* = Panel de info, el comportamiento es el de 1.9.x — **Testeado por código:** con `target=info` el template emite las mismas clases (`rp-sticky-{mode}`) y el mismo `<style>` que antes, y no inicializa `rpStickyScroll`. No se probó en navegador.
-- [x] Aprobación del cliente — Lisandro Badie (Marcovecchio) en WE-57003, 2026-09-29: "Excelente! vamos con esta opción".
+Detalle en `docs/TEST-DEPLOYMENTS.md` (entrada del 2026-11-13).
+- [x] A — Zoom con video de Vimeo/YouTube: iframe 16:9 en vez de `<video>` vacío.
+- [x] B — Listado: iframe con `controls=0`; el play/pausa propio sigue andando por postMessage.
+- [x] C/D — Botones del módulo (play/pausa, flechas del zoom y del carrusel, puntitos) no se deforman con el `button:focus/:active/:hover` del tema.
+- [x] E — Zoom en mobile ocupa toda la pantalla sobre el header.
+- [x] `prefers-reduced-motion`: un solo botón de play en la tarjeta.
+- [x] QA (Ximena Gomez, WE-15768, 2026-11-13): OK de A, B, D y E. C se corrigió después de su comentario y se verificó con Chromium; **sin confirmación de QA**.
 
 ## 3. Verificación de cache
-- [x] Testeado con todos los caches habilitados (stage en production mode, FPC activo; pruebas después de `cache:flush` y con la página ya cacheada).
-- [x] FPC: la PDP renderiza con `rp-sticky-gallery` después del warm-up.
-- [x] Config cache: `config:set` del campo nuevo exige `cache:flush` **antes**, porque el `system.xml` viejo está cacheado y el path "no existe". Queda anotado para el deploy.
+- [x] Stage en production mode con FPC; las pruebas se hicieron con la página cacheada.
 
-## 4. Verificación de documentación
-- [x] README.md / README_ES.md actualizados
-- [ ] manual.md — **no existe** (deuda previa)
-- [x] CHANGELOG.md tiene entrada para esta versión
-- [ ] i18n completo — sólo los 5 strings nuevos (deuda previa: ~140 strings del módulo sin CSV)
-- [x] CLAUDE.md creado y al día
+## 4. Documentación
+- [x] CHANGELOG.md con la entrada 1.10.1
+- [ ] manual.md / i18n — deuda previa, sin cambios
 
-## 5. Revisión rápida de calidad de código
-- [x] No quedaron var_dump/print_r/die en el código
-- [x] No hay TODO/FIXME sin resolución
-- [ ] No se usa ObjectManager — **el diff no lo usa**, pero hay un fallback previo en `ViewModel/GalleryConfig.php:41` (deuda previa)
-- [x] Los templates usan funciones de escape para toda salida dinámica (las clases nuevas pasan por `escapeHtmlAttr` junto con el resto de `$wrapperClasses`; el JSON de config ya iba `@noEscape` desde antes)
+## 5. Calidad de código
+- [x] Sin var_dump/print_r/die ni TODO nuevos
+- [x] La URL del iframe del zoom se pone como atributo con jQuery (no se concatena en markup) y en el template ya sale con `escapeHtmlAttr`
+- [x] Sin ObjectManager nuevo
 
-## 6. Lo que NO testeé (para el reviewer)
-- `target=info` en navegador (sólo revisión de código, ver arriba).
-- Layouts `vertical`, `grid` y `fashion` con `target=gallery`: Marcovecchio usa `slider`. En esos layouts la galería suele ser más larga que la info, que es el caso de `target=info`.
-- Temas Hyva: el módulo es Luma.
-- Safari/iOS real (desktop Chromium solamente; en mobile la opción no actúa).
+## 6. Lo que NO testeé
+- Safari/iOS real (Chromium con emulación mobile).
+- Videos de YouTube en el zoom (el caso real de Quiksilver es Vimeo; el camino de código es el mismo).
 - phpstan.
-- El fix 1.9.3 de WE-56006 (Popper), que viaja en esta versión, no lo re-testeé: se validó en su momento en el dev de Popper.
 
 ## 7. Sign-off del builder
 
 Confirmo que verifiqué personalmente todos los ítems marcados arriba.
-El módulo está listo para peer review.
 
-**Firmado:** Lautaro Martinez — 2026-09-29
+**Firmado:** Nehuen Berni — 2026-11-17
 
 ---
 
 ## Peer review
 
-**No hubo peer review.** Lautaro Martinez decidió publicar 1.10.0 sin reviewer el 2026-09-29, porque el cliente aprobó en stage y pidió el pase a prod (WE-57003). La deuda de estándar previa queda en `docs/TASKS.md`.
+**No hubo peer review.** Nehuen Berni pidió publicar 1.10.1 el 2026-11-17 para pasar los arreglos a prod de Quiksilver (WE-15768).
