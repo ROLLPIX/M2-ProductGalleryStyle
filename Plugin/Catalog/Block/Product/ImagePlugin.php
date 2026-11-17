@@ -365,7 +365,11 @@ class ImagePlugin
             $this->config->isListingAutoplay(),
             $this->config->isVideoMuted(),
             $this->config->isVideoLoop(),
-            true,
+            // Never the provider's own player chrome in a product card: it flashed
+            // over the thumbnail before the video started (WE-15768). The only
+            // control in the listing is ours (.rp-listing-playstop, toggled by
+            // rollpix_gallery/video/listing_controls), driven by postMessage.
+            false,
             $parsed['id']
         );
 

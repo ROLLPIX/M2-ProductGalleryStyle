@@ -5,6 +5,29 @@ Cada entrada documenta qué se deployó, cuándo, quién, y el resultado de la v
 
 ---
 
+## 2026-11-13 11:00 — Nehuen Antu Berni
+
+**Commit:** `4744053`
+**Branch:** `fix/we-15768-zoom-video-listing-controls`
+**Mensaje:** fix: zoom de videos externos, controles de Vimeo en listado y estados de foco (WE-15768)
+**Ambiente:** stage efímero de Quiksilver (Shield, ishop16, `quiksilver-we15768.stage.rollpix.dev`, clon de prod del 2026-11-13 con datos anónimos), árbol de la rama copiado sobre `vendor/rollpix/module-product-gallery`. Backup del 1.10.0 en `~/bkp_WE15768_20261113_105747/`. Se sacaron del `custom.css` del tema `Rollpix/base` los parches WE-15768 de flechas del carrusel, overlay del zoom mobile, flechas del zoom y puntitos, para probar el módulo solo. Estáticos frontend + adminhtml `--jobs 1`.
+**Config:** la de prod (`zoom/type=carousel`, `video/listing_controls=1`, `video/listing_autoplay=1`, `video/controls=0`).
+
+**Qué se está probando:**
+Los hallazgos de Ximena en prod del 2026-11-12 (WE-15768): A zoom con Vimeo, B controles de Vimeo en el listado, C play/pausa del listado, D flechas del zoom y puntitos, E zoom mobile.
+
+**Estado:** ✅ OK (builder) — falta QA
+
+**Resultado:** navegador real (Chromium).
+- A: `dcshoes …/zapatillas-manteca-4-s-bw6-dc`, item 2/11 (Vimeo): el zoom muestra el iframe reproduciendo, 1206×678 a 1366×800 y 360×203 a 390 px. Antes: `<video>` vacío, negro.
+- B: `dcshoes …/hombres/calzado/skate` (10 videos Vimeo): iframe con `controls=0`, sin chrome de Vimeo. El play/pausa propio sigue andando (Vimeo `getPaused`: false → true → false).
+- C: `.rp-listing-playstop` con foco: 32×32, `padding 0`, redondo. Un `button` cualquiera del tema con foco: `7px 32px`, fondo negro.
+- D: clic real en mobile: flecha del carrusel 36×36 y flecha del zoom 36×36 con foco; puntito con foco 10×10, `padding 0`.
+- E: zoom abierto en mobile con la página scrolleada: overlay `fixed` 0,0 390×900, z-index 10000 sobre el header (100). La galería sigue `sticky` en mobile.
+- Fichas de Quiksilver, Roxy, Ala Moana y RVCA sirven el CSS nuevo; consola sin errores; sin excepciones nuevas.
+
+**Ronda 2 (mismo día, tras lo que vio Ximena: "no se le reproducen solos"):** era `prefers-reduced-motion: reduce` en su equipo (el módulo no hace autoplay a propósito). Con eso activo la tarjeta tenía dos botones de play y el de la portada salía como cuadrado negro con hover (`button:hover` del tema). Corregido en CSS y verificado con Chromium (`reducedMotion: reduce` y `no-preference`, 1366 px y iPhone 13 a 390×900): con reduce, un solo botón (play de portada, fondo transparente); al tocarlo arranca Vimeo y aparece el play/pausa en "pausa". Sin reduce, igual que antes (autoplay + play/pausa en "pausa"). Flecha del carrusel tras tap + blur (hover pegado): 36 px, fondo blanco 0,85. Play de la portada en la ficha con hover: transparente, padding 0. Sin errores JS.
+
 ## 2026-09-28 15:55 — Lautaro Martinez
 
 **Commit:** `9633448` (963344859d1f7892faf4731516986c7c7d6840f9)

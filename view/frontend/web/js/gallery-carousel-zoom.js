@@ -81,7 +81,24 @@ define([
             $stage.empty();
 
             var item = media[index];
-            if (item.type === 'video') {
+            if (item.type === 'video' && item.embedUrl) {
+                // YouTube / Vimeo: the gallery item is a facade or an iframe,
+                // never a <video><source>, so it is rendered with its embed
+                // URL. Built with jQuery so the URL is set as an attribute,
+                // not concatenated into markup (WE-15768).
+                $stage.append(
+                    $('<div/>', {'class': 'rp-carousel-zoom-media rp-carousel-zoom-iframe-wrap'}).append(
+                        $('<iframe/>', {
+                            src: item.embedUrl,
+                            'class': 'rp-carousel-zoom-iframe',
+                            frameborder: '0',
+                            allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+                            referrerpolicy: 'strict-origin-when-cross-origin',
+                            allowfullscreen: true
+                        })
+                    )
+                );
+            } else if (item.type === 'video') {
                 $stage.append(
                     '<video autoplay loop muted playsinline class="rp-carousel-zoom-media">' +
                     '<source src="' + item.url + '" type="video/mp4"/>' +
@@ -197,10 +214,14 @@ define([
                 var mediaType = $item.data('media-type') || 'image';
 
                 if (mediaType === 'video') {
+                    var provider = $item.data('video-provider') || 'local';
                     var $source = $item.find('video source');
                     media.push({
                         type: 'video',
                         url: $source.attr('src') || '',
+                        // External providers carry their embed URL on the item
+                        // (gallery-vertical.phtml); local MP4s do not.
+                        embedUrl: provider !== 'local' ? ($item.data('video-embed-url') || '') : '',
                         alt: ''
                     });
                 } else {
